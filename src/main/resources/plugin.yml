@@ -1,0 +1,15 @@
+name: ItemAbilities
+version: '${project.version}'
+main: com.spiritlight.itemabilities.ItemAbilities
+api-version: 1.19
+prefix: ItemAbilities
+authors: [ OriTheSpirit ]
+commands:
+  addability:
+    description: Adds an ability to your item.
+    usage: /addability <ability>
+    permission: itemabilities.addability
+  removeability:
+    description: Removes an ability from your item.
+    usage: /removeability <ability>
+    permission: itemabilities.removeability
