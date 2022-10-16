@@ -1,7 +1,6 @@
 package com.spiritlight.itemabilities.utils;
 
 import com.google.common.collect.Multimap;
-import com.google.common.collect.MultimapBuilder;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.enchantments.Enchantment;
@@ -11,10 +10,14 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.tags.CustomItemTagContainer;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-public class SpiritItemMeta implements ItemMeta, Cloneable {
+/**
+ * An easy implementation of ItemMeta.
+ */
+public class SpiritItemMeta implements ItemMeta {
     private String displayName = "";
     private List<String> lore = Collections.emptyList();
     private String localizedName = "";
@@ -22,15 +25,20 @@ public class SpiritItemMeta implements ItemMeta, Cloneable {
     private Map<Enchantment, Integer> enchantments = Collections.emptyMap();
     private Set<ItemFlag> itemFlags = Collections.emptySet();
     private boolean unbreakable = false;
-    private Multimap<Attribute, AttributeModifier> attributeMap;
-    private PersistentDataContainer container;
+    @Nullable
+    private Multimap<Attribute, AttributeModifier> attributeMap = null;
+    @Nullable
+    private PersistentDataContainer container = null;
+
+    public SpiritItemMeta() {}
+
+    public SpiritItemMeta(ItemMeta meta) { fromItemMeta(meta); }
 
     /**
      * Sets the current object into the ItemMeta provided.
      * @param meta The meta to clone itself into
-     * @return The new SpiritItemMeta
      */
-    public final SpiritItemMeta fromItemMeta(@NotNull ItemMeta meta) {
+    public final void fromItemMeta(@NotNull ItemMeta meta) {
         lore = meta.getLore();
         displayName = meta.getDisplayName();
         localizedName = meta.getLocalizedName();
@@ -40,7 +48,6 @@ public class SpiritItemMeta implements ItemMeta, Cloneable {
         unbreakable = meta.isUnbreakable();
         attributeMap = meta.getAttributeModifiers();
         container = meta.getPersistentDataContainer();
-        return this;
     }
 
 
@@ -188,7 +195,7 @@ public class SpiritItemMeta implements ItemMeta, Cloneable {
 
     @Override
     public boolean hasAttributeModifiers() {
-        return !attributeMap.isEmpty();
+        return attributeMap != null && attributeMap.isEmpty();
     }
 
     @org.jetbrains.annotations.Nullable
@@ -206,12 +213,12 @@ public class SpiritItemMeta implements ItemMeta, Cloneable {
     @org.jetbrains.annotations.Nullable
     @Override
     public Collection<AttributeModifier> getAttributeModifiers(@NotNull Attribute attribute) {
-        return attributeMap.get(attribute);
+        return attributeMap == null ? null : attributeMap.get(attribute);
     }
 
     @Override
     public boolean addAttributeModifier(@NotNull Attribute attribute, @NotNull AttributeModifier modifier) {
-        return attributeMap.put(attribute, modifier);
+        return attributeMap != null && attributeMap.put(attribute, modifier);
     }
 
     @Override
@@ -221,7 +228,9 @@ public class SpiritItemMeta implements ItemMeta, Cloneable {
 
     @Override
     public boolean removeAttributeModifier(@NotNull Attribute attribute) {
-        attributeMap.removeAll(attribute);
+        if (attributeMap != null)
+            attributeMap.removeAll(attribute);
+        else return false;
         return true;
     }
 
@@ -232,7 +241,7 @@ public class SpiritItemMeta implements ItemMeta, Cloneable {
 
     @Override
     public boolean removeAttributeModifier(@NotNull Attribute attribute, @NotNull AttributeModifier modifier) {
-        return attributeMap.remove(attribute, modifier);
+        return attributeMap != null && attributeMap.remove(attribute, modifier);
     }
 
     /**
@@ -258,13 +267,13 @@ public class SpiritItemMeta implements ItemMeta, Cloneable {
     @NotNull
     @Override
     public ItemMeta clone() {
-        return this.clone();
+        return new SpiritItemMeta(this);
     }
 
     @NotNull
     @Override
     public Map<String, Object> serialize() {
-        return null;
+        return Collections.emptyMap();
     }
 
     @NotNull

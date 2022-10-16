@@ -82,6 +82,20 @@ public class PluginWrapper {
         Bukkit.getScheduler().cancelTask(taskID);
     }
 
+    /**
+     *
+     * @param key Namespace key for this ability
+     * @param name The internal name for this ability
+     * @param abilityName The displayed name for this ability
+     * @param abilityDescription The description displayed for this ability
+     * @param abilityVisible Whether this ability should be visible on enchant
+     * @param maxLevel The maximum level
+     * @param target Targets this ability can be applied to
+     * @param cursed Whether this ability is cursed
+     * @param conflicts Conflicts enchantment, null to always return false
+     * @param canEnchant Can enchant on this itemstack, null to test with target.
+     * @return Generated ability
+     */
     public static Ability newAbility(NamespacedKey key, String name, String abilityName, String abilityDescription,
                                      boolean abilityVisible, int maxLevel,
                                      EnchantmentTarget target, boolean cursed,
@@ -126,7 +140,7 @@ public class PluginWrapper {
 
             @Override
             public boolean conflictsWith(@NotNull Enchantment other) {
-                return conflicts == null || conflicts.test(other);
+                return conflicts != null && conflicts.test(other);
             }
 
             @Override

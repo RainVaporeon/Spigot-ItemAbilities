@@ -25,11 +25,6 @@ public class ItemAbilities extends JavaPlugin {
     @Override
     public void onEnable() {
         INSTANCE = this;
-        abilityMap.clear();
-        ABILITY_TRACER = PluginWrapper.newNameSpacedKey("tracer");
-        ABILITY_GUARDIAN = PluginWrapper.newNameSpacedKey("guardian");
-        abilityMap.put(VAbilityTracer.ability.getAbilityName(), VAbilityTracer.ability);
-        abilityMap.put(CAbilityGuardian.ability.getAbilityName(), CAbilityGuardian.ability);
         if(!initFinish) {
             try {
                 init();
@@ -48,6 +43,10 @@ public class ItemAbilities extends JavaPlugin {
     private void init() throws ReflectiveOperationException {
         initFinish = true;
         // Ignore add blocks
+        ABILITY_TRACER = PluginWrapper.newNameSpacedKey("tracer");
+        ABILITY_GUARDIAN = PluginWrapper.newNameSpacedKey("guardian");
+        abilityMap.put(VAbilityTracer.ability.getAbilityName(), VAbilityTracer.ability);
+        abilityMap.put(CAbilityGuardian.ability.getAbilityName(), CAbilityGuardian.ability);
         Field f = Enchantment.class.getDeclaredField("acceptingNew");
         f.setAccessible(true);
         f.set(null, true);

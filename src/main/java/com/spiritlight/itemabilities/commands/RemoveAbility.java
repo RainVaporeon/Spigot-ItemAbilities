@@ -28,17 +28,17 @@ public class RemoveAbility extends CommandBase {
         Ability ability = ItemAbilities.abilityMap.get(args[0]);
         if(ability == null) {
             sender.sendMessage("You need to specify a correct ability name!");
+            sender.sendMessage("Available options: " + ItemAbilities.abilityMap.keySet());
             return true;
         }
         try {
             ItemStack i = ((Player) sender).getInventory().getItemInMainHand();
-            if(!i.containsEnchantment(ability)) {
-                sender.sendMessage("This ability is not linked to this item!");
-                return true;
-            }
-            i.removeEnchantment(ability);
             if(!i.hasItemMeta()) {
                 i.setItemMeta(new SpiritItemMeta());
+            }
+            if(i.removeEnchantment(ability) == 0) {
+                sender.sendMessage("This ability is not linked to this item!");
+                return true;
             }
             // assert i.getItemMeta() != null
             if(i.getItemMeta().hasLore()) {

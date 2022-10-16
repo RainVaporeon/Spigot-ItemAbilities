@@ -25,53 +25,16 @@ import java.util.concurrent.TimeUnit;
  * from shot arrow to glow after it's shot for at least 0.5 seconds.
  */
 public class VAbilityTracer extends EventListener {
-    public static final Ability ability = new Ability(ItemAbilities.ABILITY_TRACER, "tracer") {
-        @Override
-        public @NotNull String getAbilityDescription() {
-            return """
+    public static final Ability ability = PluginWrapper.newAbility(
+            ItemAbilities.ABILITY_TRACER, "tracer", "Tracer",
+            """
                     Arrows shot has tracking ability.
 
                     Causes nearby enemies from shot arrow to glow
-                    after it's shot for at least 0.5 seconds.""";
-        }
-
-        @Override
-        public boolean abilityVisible() {
-            return false;
-        }
-
-        @NotNull
-        @Override
-        public String getName() {
-            return ability.getKey().getKey();
-        }
-
-        @Override
-        public int getMaxLevel() {
-            return 0;
-        }
-
-        @NotNull
-        @Override
-        public EnchantmentTarget getItemTarget() {
-            return EnchantmentTarget.BOW;
-        }
-
-        @Override
-        public boolean isCursed() {
-            return false;
-        }
-
-        @Override
-        public boolean conflictsWith(@NotNull Enchantment other) {
-            return false;
-        }
-
-        @Override
-        public boolean canEnchantItem(@NotNull ItemStack item) {
-            return getItemTarget().includes(item);
-        }
-    };
+                    after it's shot for at least 0.5 seconds.""",
+            true, 1, EnchantmentTarget.BOW, false,
+            null, null
+    );
 
     @EventHandler
     public void onBowShot(@NotNull EntityShootBowEvent event) {
