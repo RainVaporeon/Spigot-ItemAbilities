@@ -1,25 +1,23 @@
 package com.spiritlight.itemabilities.abilities;
 
-import com.spiritlight.itemabilities.utils.PluginWrapper;
+import org.bukkit.ChatColor;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.enchantments.EnchantmentTarget;
-import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Ability extends Enchantment {
-    private String name;
+    private final String name;
 
 
     public Ability(NamespacedKey key, String name) {
         super(key);
+        this.name = name;
     }
 
-    @NotNull
-    public abstract String getAbilityDescription();
+    public abstract String[] getAbilityDescription();
 
     public abstract boolean abilityVisible();
 
@@ -38,13 +36,13 @@ public abstract class Ability extends Enchantment {
         return 0;
     }
 
-    @Override
-    public @NotNull NamespacedKey getKey() {
-        return super.getKey();
-    }
-
     public final List<String> descriptionList = new ArrayList<>() {{
         add("");
-        add(PluginWrapper.FORMAT + "6" + getAbilityName() + ": " + PluginWrapper.FORMAT + "e" + getAbilityDescription());
+        add(ChatColor.GOLD + getAbilityName());
+        for(String desc : getAbilityDescription()) {
+            add(ChatColor.YELLOW + desc);
+        }
     }};
+
+
 }

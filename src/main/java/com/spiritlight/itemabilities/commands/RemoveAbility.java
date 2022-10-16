@@ -7,6 +7,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -33,19 +34,24 @@ public class RemoveAbility extends CommandBase {
         }
         try {
             ItemStack i = ((Player) sender).getInventory().getItemInMainHand();
-            if(!i.hasItemMeta()) {
-                i.setItemMeta(new SpiritItemMeta());
+            ItemMeta meta = i.getItemMeta();
+            if(meta == null) {
+                meta = new SpiritItemMeta(i.getItemMeta());
             }
             if(i.removeEnchantment(ability) == 0) {
                 sender.sendMessage("This ability is not linked to this item!");
                 return true;
             }
-            // assert i.getItemMeta() != null
-            if(i.getItemMeta().hasLore()) {
-                List<String> lore = i.getItemMeta().getLore();
+            // assert meta() != null
+            if(meta.getLore() != null && ability.abilityVisible()) {
+                List<String> lore = meta.getLore();
                 lore.removeIf(ability.descriptionList::contains);
-                i.getItemMeta().setLore(lore);
+                lore.remove(lore.size() - 1);
+                meta.setLore(lore);
+                System.out.println("Lore removed!");
             }
+            i.setItemMeta(meta);
+            ((Player) sender).getInventory().getItemInMainHand().setItemMeta(meta);
             sender.sendMessage("The ability has been removed from this item!");
             return true;
         } catch (Exception t) {

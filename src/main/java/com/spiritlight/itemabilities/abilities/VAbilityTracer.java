@@ -1,16 +1,14 @@
 package com.spiritlight.itemabilities.abilities;
 
 import com.spiritlight.itemabilities.ItemAbilities;
-import com.spiritlight.itemabilities.utils.EventListener;
 import com.spiritlight.itemabilities.utils.PluginWrapper;
-import org.bukkit.enchantments.Enchantment;
+import org.bukkit.EntityEffect;
 import org.bukkit.enchantments.EnchantmentTarget;
-import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityShootBowEvent;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
@@ -19,19 +17,14 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Visual ability: Tracer<br>
+ * Combat ability: Tracer<br>
  * <br>
- * Arrows shot has tracking ability. Causes nearby (4 Blocks) enemies
- * from shot arrow to glow after it's shot for at least 0.5 seconds.
+ * Arrows shot has tracking ability.
  */
-public class VAbilityTracer extends EventListener {
+public class VAbilityTracer implements Listener {
     public static final Ability ability = PluginWrapper.newAbility(
             ItemAbilities.ABILITY_TRACER, "tracer", "Tracer",
-            """
-                    Arrows shot has tracking ability.
-
-                    Causes nearby enemies from shot arrow to glow
-                    after it's shot for at least 0.5 seconds.""",
+            new String[]{"Arrows shot has tracking ability."},
             true, 1, EnchantmentTarget.BOW, false,
             null, null
     );
@@ -39,25 +32,26 @@ public class VAbilityTracer extends EventListener {
     @EventHandler
     public void onBowShot(@NotNull EntityShootBowEvent event) {
         if (event.getBow() == null) return;
-        if (!event.getBow().hasItemMeta()) return;
-        if(!event.getBow().getItemMeta().hasLore()) return;
-        // Detect whether this item actually qualifies
-        boolean flag = event.getBow().getItemMeta().getLore().stream().anyMatch(lore -> lore.equalsIgnoreCase(ability.getAbilityName()));
-        if(!flag) return;
-        final Entity entity = event.getProjectile();
+        if (!PluginWrapper.containsEnchantment(event.getBow(), ability)) {
+            System.out.println("Entity shot bow, but does not have the ability!");
+            return;
+        } else System.out.println("Entity shot bow and has the ability.");
+        final Entity projectile = event.getProjectile();
         final int task = PluginWrapper.scheduleRepeatTask(() -> {
-            Arrow arrow = (Arrow) entity;
-            if(arrow.isOnGround()) return;
-            if(arrow.getTicksLived() >= 10) {
-                List<Entity> entityList = arrow.getNearbyEntities(4, 4, 4);
-                for(Entity e : entityList) {
-                    if(!(e instanceof LivingEntity)) continue;
-                    if(((LivingEntity) e).hasPotionEffect(PotionEffectType.GLOWING)) continue;
-                    ((LivingEntity) e).addPotionEffect(
-                            new PotionEffect(PotionEffectType.GLOWING, (int) PluginWrapper.toTick(8, TimeUnit.SECONDS), 0)
-                    );
+            try {
+                projectile.playEffect(EntityEffect.FIREWORK_EXPLODE);
+                if(projectile.getTicksLived() >= 8) {
+                    List<Entity> entityList = projectile.getNearbyEntities(3.5, 3, 3.5);
+                    for(Entity entity : entityList) {
+                        if(!(entity instanceof LivingEntity)) continue;
+                        if(((LivingEntity) entity).getPotionEffect(PotionEffectType.GLOWING) != null) continue;
+                        ((LivingEntity) entity).addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, (int) PluginWrapper.toTick(8, TimeUnit.SECONDS), 1));
+                    }
                 }
+            } catch (Throwable t) {
+                t.printStackTrace();
+                Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), t);
             }
-        }, 10, 100);
+        }, 3, 81);
     }
 }

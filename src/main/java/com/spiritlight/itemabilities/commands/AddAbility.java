@@ -3,11 +3,13 @@ package com.spiritlight.itemabilities.commands;
 import com.spiritlight.itemabilities.ItemAbilities;
 import com.spiritlight.itemabilities.abilities.Ability;
 import com.spiritlight.itemabilities.utils.CommandBase;
+import com.spiritlight.itemabilities.utils.PluginWrapper;
 import com.spiritlight.itemabilities.utils.SpiritItemMeta;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -35,25 +37,30 @@ public class AddAbility extends CommandBase {
         }
         try {
             ItemStack i = ((Player) sender).getInventory().getItemInMainHand();
-            if(i.containsEnchantment(ability)) {
+            ItemMeta meta = i.getItemMeta();
+            if(PluginWrapper.containsEnchantment(i, ability)) {
                 sender.sendMessage("You cannot have duplicate abilities!");
                 return true;
             }
-            i.addEnchantment(ability, 1);
-            if(!i.hasItemMeta()) {
+            if(meta == null) {
                 System.out.println("Item has no meta. Creating a new one.");
-                i.setItemMeta(new SpiritItemMeta());
+                meta = new SpiritItemMeta(i.getItemMeta());
             }
             // assert i.getItemMeta() != null
-            if(i.getItemMeta().hasLore()) {
-                List<String> lore = Objects.requireNonNull(i.getItemMeta().getLore());
-                lore.add("");
-                lore.addAll(ability.descriptionList);
-                i.getItemMeta().setLore(lore);
-            } else {
-                System.out.println("Added lore!");
-                i.getItemMeta().setLore(ability.descriptionList);
+            if(ability.abilityVisible()) {
+                if(meta.hasLore()) {
+                    List<String> lore = Objects.requireNonNull(meta.getLore());
+                    lore.addAll(ability.descriptionList);
+                    meta.setLore(lore);
+                    System.out.println("Appended lore!");
+                } else {
+                    System.out.println("Added lore!");
+                    meta.setLore(ability.descriptionList);
+                }
             }
+            i.setItemMeta(meta);
+            ((Player) sender).getInventory().getItemInMainHand().setItemMeta(meta);
+            i.addEnchantment(ability, 1);
             sender.sendMessage("The ability has been added to this item!");
             return true;
         } catch (Exception t) {

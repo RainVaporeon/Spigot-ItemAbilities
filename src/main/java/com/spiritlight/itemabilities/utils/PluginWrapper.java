@@ -1,32 +1,16 @@
 package com.spiritlight.itemabilities.utils;
 
-import com.google.common.collect.Multimap;
 import com.spiritlight.itemabilities.ItemAbilities;
 import com.spiritlight.itemabilities.abilities.Ability;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
-import org.bukkit.attribute.Attribute;
-import org.bukkit.attribute.AttributeModifier;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.TabCompleter;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.enchantments.EnchantmentTarget;
-import org.bukkit.event.Listener;
-import org.bukkit.inventory.EquipmentSlot;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.tags.CustomItemTagContainer;
-import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.CheckReturnValue;
-import javax.annotation.Nullable;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
 
@@ -38,15 +22,11 @@ import java.util.function.Predicate;
 public class PluginWrapper {
     private PluginWrapper() {}
 
-    public static final String FORMAT = "\u00A7";
-    
-    public static void subscribeEvents(Listener listener) {
-        ItemAbilities.INSTANCE.getServer().getPluginManager().registerEvents(listener, ItemAbilities.INSTANCE);
-    }
-
-    @Nullable
-    public static Plugin getPluginInstance(String plugin) {
-        return Bukkit.getPluginManager().getPlugin(plugin);
+    // Using this because apparently the implement will NOT work for weird reasons.
+    public static boolean containsEnchantment(ItemStack stack, Enchantment enchantment) {
+        if(stack == null || enchantment == null) return false;
+        ItemStack stx = stack.clone();
+        return stx.removeEnchantment(enchantment) != 0;
     }
 
     public static long toTick(long time, TimeUnit unit) {
@@ -96,13 +76,13 @@ public class PluginWrapper {
      * @param canEnchant Can enchant on this itemstack, null to test with target.
      * @return Generated ability
      */
-    public static Ability newAbility(NamespacedKey key, String name, String abilityName, String abilityDescription,
+    public static Ability newAbility(NamespacedKey key, String name, String abilityName, String[] abilityDescription,
                                      boolean abilityVisible, int maxLevel,
                                      EnchantmentTarget target, boolean cursed,
                                      Predicate<Enchantment> conflicts, Predicate<ItemStack> canEnchant) {
         return new Ability(key, name) {
             @Override
-            public @NotNull String getAbilityDescription() {
+            public String[] getAbilityDescription() {
                 return abilityDescription;
             }
 

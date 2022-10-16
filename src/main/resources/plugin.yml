@@ -9,7 +9,19 @@ commands:
     description: Adds an ability to your item.
     usage: /addability <ability>
     permission: itemabilities.addability
+    permission-message: You are not allowed to use this command!
   removeability:
     description: Removes an ability from your item.
     usage: /removeability <ability>
     permission: itemabilities.removeability
+    permission-message: You are not allowed to use this command!
+  addattribute:
+    description: Adds an attribute to your item.
+    usage: /addattribute <attribute> <modifier>
+    permission: itemabilities.addattribute
+    permission-message: You are not allowed to use this command!
+  removeattribute:
+    description: Removes an attribute from your item.
+    usage: /removeattribute <attribute>
+    permission: itemabilities.removeattribute
+    permission-message: You are not allowed to use this command!

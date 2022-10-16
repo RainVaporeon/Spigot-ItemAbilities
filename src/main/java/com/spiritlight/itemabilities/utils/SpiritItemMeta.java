@@ -17,6 +17,7 @@ import java.util.*;
 /**
  * An easy implementation of ItemMeta.
  */
+@SuppressWarnings("MethodDoesntCallSuperMethod")
 public class SpiritItemMeta implements ItemMeta {
     private String displayName = "";
     private List<String> lore = Collections.emptyList();
@@ -27,8 +28,6 @@ public class SpiritItemMeta implements ItemMeta {
     private boolean unbreakable = false;
     @Nullable
     private Multimap<Attribute, AttributeModifier> attributeMap = null;
-    @Nullable
-    private PersistentDataContainer container = null;
 
     public SpiritItemMeta() {}
 
@@ -38,7 +37,8 @@ public class SpiritItemMeta implements ItemMeta {
      * Sets the current object into the ItemMeta provided.
      * @param meta The meta to clone itself into
      */
-    public final void fromItemMeta(@NotNull ItemMeta meta) {
+    public final void fromItemMeta(ItemMeta meta) {
+        if(meta == null) return;
         lore = meta.getLore();
         displayName = meta.getDisplayName();
         localizedName = meta.getLocalizedName();
@@ -47,7 +47,6 @@ public class SpiritItemMeta implements ItemMeta {
         itemFlags = meta.getItemFlags();
         unbreakable = meta.isUnbreakable();
         attributeMap = meta.getAttributeModifiers();
-        container = meta.getPersistentDataContainer();
     }
 
 
@@ -279,6 +278,6 @@ public class SpiritItemMeta implements ItemMeta {
     @NotNull
     @Override
     public PersistentDataContainer getPersistentDataContainer() {
-        return container;
+        throw new UnsupportedOperationException();
     }
 }
