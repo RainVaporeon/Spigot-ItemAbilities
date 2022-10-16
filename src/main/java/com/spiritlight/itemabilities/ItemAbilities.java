@@ -49,6 +49,7 @@ public class ItemAbilities extends JavaPlugin {
         registerNameSpace();
         registerAbilityMap();
         enchantLock(true);
+        // Register abilities and attribute notes
         Enchantment.registerEnchantment(VAbilityTracer.ability);
         Enchantment.registerEnchantment(CAbilityGuardian.ability);
         Enchantment.registerEnchantment(Attributes.SPEED);
@@ -69,6 +70,9 @@ public class ItemAbilities extends JavaPlugin {
         ATTRIBUTE_LIGHTWEIGHT = PluginWrapper.newNameSpacedKey("lightweight");
     }
 
+    /**
+     * Internal uses only, registers assignable abilities
+     */
     private void registerAbilityMap() {
         abilityMap.put(VAbilityTracer.ability.getAbilityName(), VAbilityTracer.ability);
         abilityMap.put(CAbilityGuardian.ability.getAbilityName(), CAbilityGuardian.ability);

@@ -18,7 +18,7 @@ public class CAbilityLightweight implements Listener {
             double modifier = 1.0D;
             for(ItemStack i : EnchantmentUtils.getEnchantedItems((LivingEntity) event.getEntity(), ability)) {
                 float mod = 1 - (i.getEnchantmentLevel(ability) / 100.0F);
-                System.out.println("Reduction: Reduce " + i.getEnchantmentLevel(ability) + "% fall damage");
+                System.out.println("Reduction: Reduce " + EnchantmentUtils.getEnchantmentLevel(i, ability) + "% fall damage");
                 modifier *= mod;
             }
             event.setDamage(event.getDamage() * modifier);

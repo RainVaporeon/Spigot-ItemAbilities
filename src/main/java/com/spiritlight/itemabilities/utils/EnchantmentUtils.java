@@ -11,6 +11,11 @@ import java.util.Collections;
 import java.util.List;
 
 public class EnchantmentUtils {
+    public static int getEnchantmentLevel(ItemStack itemStack, Enchantment enchantment) {
+        ItemStack i0 = itemStack.clone();
+        return i0.removeEnchantment(enchantment);
+    }
+
     public static boolean entityHasEnchantment(LivingEntity entity, Enchantment enchantment) {
         return entityHasEnchantment(entity, enchantment, null);
     }
