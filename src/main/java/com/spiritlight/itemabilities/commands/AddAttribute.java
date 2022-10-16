@@ -10,6 +10,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
@@ -74,7 +75,7 @@ public class AddAttribute implements CommandExecutor, TabCompleter {
                 System.out.println("Appended lore!");
             } else {
                 System.out.println("Added lore!");
-                meta.setLore(ability.descriptionList);
+                meta.setLore(Collections.singletonList(Attributes.getAttributeText(ability, modifier)));
             }
             Attributes.Modifier attribute = Attributes.getAttribute(ability);
             if (attribute == null) {
@@ -83,7 +84,11 @@ public class AddAttribute implements CommandExecutor, TabCompleter {
                 }
             } else {
                 try {
-                    meta.addAttributeModifier(attribute.getType(), new AttributeModifier(attribute.getUuid(), attribute.getName(), modifier / 100.0F, attribute.getOperation()));
+                    meta.addAttributeModifier(attribute.getType(), new AttributeModifier(
+                            attribute.getUuid(), attribute.getName(),
+                            attribute.getOperation() == AttributeModifier.Operation.ADD_NUMBER ? modifier : modifier / 100.0F,
+                            attribute.getOperation()));
+                    meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
                 } catch (IllegalArgumentException e) {
                     sender.sendMessage("There seems to be an modifier that already exists!");
                     return false;

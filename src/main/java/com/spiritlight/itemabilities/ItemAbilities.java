@@ -1,9 +1,6 @@
 package com.spiritlight.itemabilities;
 
-import com.spiritlight.itemabilities.abilities.Ability;
-import com.spiritlight.itemabilities.abilities.Attributes;
-import com.spiritlight.itemabilities.abilities.CAbilityGuardian;
-import com.spiritlight.itemabilities.abilities.VAbilityTracer;
+import com.spiritlight.itemabilities.abilities.*;
 import com.spiritlight.itemabilities.commands.AddAbility;
 import com.spiritlight.itemabilities.commands.AddAttribute;
 import com.spiritlight.itemabilities.commands.RemoveAbility;
@@ -98,5 +95,6 @@ public class ItemAbilities extends JavaPlugin {
     private void registerEvents() {
         this.getServer().getPluginManager().registerEvents(new VAbilityTracer(), this);
         this.getServer().getPluginManager().registerEvents(new CAbilityGuardian(), this);
+        this.getServer().getPluginManager().registerEvents(new CAbilityLightweight(), this);
     }
 }

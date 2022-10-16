@@ -46,8 +46,8 @@ public class RemoveAttribute implements CommandExecutor, TabCompleter {
         try {
             ItemStack i = ((Player) sender).getInventory().getItemInMainHand();
             ItemMeta meta = i.getItemMeta();
-            if (PluginWrapper.containsEnchantment(i, ability)) {
-                sender.sendMessage("You cannot have duplicate attributes!");
+            if (!PluginWrapper.containsEnchantment(i, ability)) {
+                sender.sendMessage("This attribute does not exist!");
                 return true;
             }
             if (meta == null) {

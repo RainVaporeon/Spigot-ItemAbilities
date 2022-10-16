@@ -54,6 +54,7 @@ public class Attributes {
     }};
 
     public static String getAttributeText(Ability attribute, int modifier) {
+        System.out.println("Acquiring attribute text with modifier " + modifier + " and attribute " + attribute.getAbilityName());
         return (modifier >= 0 ? ChatColor.GREEN : ChatColor.RED) + Integer.toString(modifier) + attribute.getAbilityName();
     }
 
