@@ -2,6 +2,7 @@ package com.spiritlight.itemabilities.commands;
 
 import com.spiritlight.itemabilities.abilities.Ability;
 import com.spiritlight.itemabilities.abilities.Attributes;
+import com.spiritlight.itemabilities.utils.CommandBase;
 import com.spiritlight.itemabilities.utils.PluginWrapper;
 import com.spiritlight.itemabilities.utils.SpiritItemMeta;
 import org.bukkit.attribute.AttributeModifier;
@@ -19,7 +20,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-public class RemoveAttribute implements CommandExecutor, TabCompleter {
+public class RemoveAttribute extends CommandBase {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (!command.getName().equalsIgnoreCase("removeattribute")) return false;

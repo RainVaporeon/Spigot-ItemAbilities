@@ -5,9 +5,11 @@ import com.spiritlight.itemabilities.commands.AddAbility;
 import com.spiritlight.itemabilities.commands.AddAttribute;
 import com.spiritlight.itemabilities.commands.RemoveAbility;
 import com.spiritlight.itemabilities.commands.RemoveAttribute;
+import com.spiritlight.itemabilities.utils.CommandBase;
 import com.spiritlight.itemabilities.utils.PluginWrapper;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.lang.reflect.Field;
@@ -107,21 +109,28 @@ public class ItemAbilities extends JavaPlugin {
 
     @SuppressWarnings("all")
     private void registerCommands() {
-        this.getCommand("addability").setExecutor(new AddAbility());
-        this.getCommand("removeability").setExecutor(new RemoveAbility());
-        this.getCommand("addability").setTabCompleter(new AddAbility());
-        this.getCommand("removeability").setTabCompleter(new RemoveAbility());
-        this.getCommand("addattribute").setExecutor(new AddAttribute());
-        this.getCommand("removeattribute").setExecutor(new RemoveAttribute());
-        this.getCommand("addattribute").setTabCompleter(new AddAttribute());
-        this.getCommand("removeattribute").setTabCompleter(new RemoveAttribute());
+        this.setExecutorAndTabComplete("addability", new AddAbility());
+        this.setExecutorAndTabComplete("removeability", new RemoveAbility());
+        this.setExecutorAndTabComplete("addattribute", new AddAttribute());
+        this.setExecutorAndTabComplete("removeattribute", new RemoveAttribute());
     }
 
+    // Register event listeners to make ability trigger
     private void registerEvents() {
-        this.getServer().getPluginManager().registerEvents(new VAbilityTracer(), this);
-        this.getServer().getPluginManager().registerEvents(new CAbilityGuardian(), this);
-        this.getServer().getPluginManager().registerEvents(new CAbilityLightweight(), this);
-        this.getServer().getPluginManager().registerEvents(new CAbilityStrikeBack(), this);
-        this.getServer().getPluginManager().registerEvents(new CAbilityDoubleStrike(), this);
+        registerEvent(new VAbilityTracer());
+        registerEvent(new CAbilityGuardian());
+        registerEvent(new CAbilityLightweight());
+        registerEvent(new CAbilityStrikeBack());
+        registerEvent(new CAbilityDoubleStrike());
+    }
+
+    private void registerEvent(Listener l) {
+        this.getServer().getPluginManager().registerEvents(l, this);
+    }
+
+    @SuppressWarnings("all")
+    private void setExecutorAndTabComplete(String command, CommandBase handler) {
+        this.getCommand(command).setExecutor(handler);
+        this.getCommand(command).setTabCompleter(handler);
     }
 }

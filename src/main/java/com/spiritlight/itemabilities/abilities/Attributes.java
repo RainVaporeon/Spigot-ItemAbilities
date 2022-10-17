@@ -32,7 +32,7 @@ public class Attributes {
 
     // Level 1 due to attributes not depending on enchantment
     public static final Ability ATTACK_DAMAGE_RAW = PluginWrapper.newAbility(
-            ItemAbilities.ATTRIBUTE_ATTACK_DAMAGE_RAW, "atkdmgraw", " Attack Damage",
+            ItemAbilities.ATTRIBUTE_ATTACK_DAMAGE_RAW, "atkdmgraw", " Raw Attack Damage",
             new String[0], true, 1, EnchantmentTarget.BREAKABLE,
             false, null, null
     );

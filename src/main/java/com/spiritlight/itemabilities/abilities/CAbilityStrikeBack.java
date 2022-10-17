@@ -27,7 +27,7 @@ public class CAbilityStrikeBack implements Listener {
         if(!(event.getDamager() instanceof LivingEntity attacker)) return;
         if(!(event.getEntity() instanceof LivingEntity receiver)) return;
         if(EnchantmentUtils.entityHasEnchantment(receiver, ability)) {
-            boolean b = RANDOM.nextInt(100) + 1 > 65; // 1 ~ 100
+            boolean b = RANDOM.nextInt(100) > 64; // 1 ~ 100
             if(!b) return;
             World world = attacker.getWorld();
             double damage = event.getDamage() * 0.5;
