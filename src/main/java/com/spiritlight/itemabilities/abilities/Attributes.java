@@ -43,23 +43,60 @@ public class Attributes {
             false, null, null
     );
 
+    // You know the drill
+    public static final Ability HEALTH = PluginWrapper.newAbility(
+            ItemAbilities.ATTRIBUTE_HEALTH, "health", " Health",
+            new String[0], true, 1, EnchantmentTarget.BREAKABLE,
+            false, null, null
+    );
+
+    public static final Ability ARMOR = PluginWrapper.newAbility(
+            ItemAbilities.ATTRIBUTE_ARMOR, "armor", " Armor",
+            new String[0], true, 1, EnchantmentTarget.BREAKABLE,
+            false, null, null
+    );
+
+    public static final Ability TOUGHNESS = PluginWrapper.newAbility(
+            ItemAbilities.ATTRIBUTE_TOUGHNESS, "toughness", " Toughness",
+            new String[0], true, 1, EnchantmentTarget.BREAKABLE,
+            false, null, null
+    );
+
     private static final Map<String, Ability> attributeMap = new HashMap<>() {{
         put("speed", SPEED);
         put("atkdmgpct", ATTACK_DAMAGE_PCT);
         put("atkdmgraw", ATTACK_DAMAGE_RAW);
         put("lightweight", LIGHTWEIGHT);
+        put("health", HEALTH);
+        put("armor", ARMOR);
+        put("toughness", TOUGHNESS);
     }};
 
     private static final Map<Ability, Modifier> modifierMap = new HashMap<>() {{
-       put(SPEED, new Modifier("itemabilities.speed", Attribute.GENERIC_MOVEMENT_SPEED , AttributeModifier.Operation.ADD_SCALAR));
-       put(ATTACK_DAMAGE_PCT, new Modifier("itemabilities.attack_percent", Attribute.GENERIC_ATTACK_DAMAGE, AttributeModifier.Operation.ADD_SCALAR));
-       put(ATTACK_DAMAGE_RAW, new Modifier("itemabilities.attack_raw", Attribute.GENERIC_ATTACK_DAMAGE, AttributeModifier.Operation.ADD_NUMBER));
-       put(LIGHTWEIGHT, null);
+        put(SPEED, new Modifier("itemabilities.speed",
+                Attribute.GENERIC_MOVEMENT_SPEED,
+                AttributeModifier.Operation.ADD_SCALAR));
+        put(ATTACK_DAMAGE_PCT, new Modifier("itemabilities.attack_percent",
+                Attribute.GENERIC_ATTACK_DAMAGE,
+                AttributeModifier.Operation.ADD_SCALAR));
+        put(ATTACK_DAMAGE_RAW, new Modifier("itemabilities.attack_raw",
+                Attribute.GENERIC_ATTACK_DAMAGE,
+                AttributeModifier.Operation.ADD_NUMBER));
+        put(LIGHTWEIGHT, null);
+        put(HEALTH, new Modifier("itemabilities.health",
+                Attribute.GENERIC_MAX_HEALTH,
+                AttributeModifier.Operation.ADD_NUMBER));
+        put(ARMOR, new Modifier("itemabilities.armor",
+                Attribute.GENERIC_ARMOR,
+                AttributeModifier.Operation.ADD_NUMBER));
+        put(TOUGHNESS, new Modifier("itemabilities.toughness",
+                Attribute.GENERIC_ARMOR_TOUGHNESS,
+                AttributeModifier.Operation.ADD_NUMBER));
     }};
 
     public static String getAttributeText(Ability attribute, int modifier) {
         System.out.println("Acquiring attribute text with modifier " + modifier + " and attribute " + attribute.getAbilityName());
-        return (modifier >= 0 ? ChatColor.GREEN : ChatColor.RED) + Integer.toString(modifier) + ChatColor.GRAY + attribute.getAbilityName();
+        return (modifier >= 0 ? ChatColor.GREEN + (modifier > 0 ? "+" : "") : ChatColor.RED) + Integer.toString(modifier) + ChatColor.GRAY + attribute.getAbilityName();
     }
 
     @Nullable

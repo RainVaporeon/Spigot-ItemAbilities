@@ -16,7 +16,7 @@ import java.util.Random;
 public class CAbilityStrikeBack implements Listener {
     public static final Ability ability = PluginWrapper.newAbility(
             ItemAbilities.ABILITY_STRIKEBACK, "strikeback", "Revenge",
-            new String[] {"35% chance to hit back at 50% damage", ChatColor.GRAY + "(Unstackable)"},
+            new String[] {"35% chance to hit back at 50% damage received", ChatColor.GRAY + "(Unstackable)"},
             true, 1, EnchantmentTarget.BREAKABLE, false, null, null
     );
 
@@ -40,7 +40,7 @@ public class CAbilityStrikeBack implements Listener {
                     attacker.setLastDamage(damage);
                     attacker.setNoDamageTicks(0);
                 } catch (IllegalArgumentException ignored) { /* Bukkit giving away exceptions for free */}
-            }, 20);
+            }, 10);
         }
     }
 }

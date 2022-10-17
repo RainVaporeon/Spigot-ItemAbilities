@@ -24,6 +24,9 @@ public class ItemAbilities extends JavaPlugin {
     public static NamespacedKey ATTRIBUTE_ATTACK_DAMAGE_PCT;
     public static NamespacedKey ATTRIBUTE_ATTACK_DAMAGE_RAW;
     public static NamespacedKey ATTRIBUTE_LIGHTWEIGHT;
+    public static NamespacedKey ATTRIBUTE_HEALTH;
+    public static NamespacedKey ATTRIBUTE_ARMOR;
+    public static NamespacedKey ATTRIBUTE_TOUGHNESS;
     public static final Map<String, Ability> abilityMap = new HashMap<>();
     private boolean initFinish = false;
 
@@ -61,6 +64,9 @@ public class ItemAbilities extends JavaPlugin {
         Enchantment.registerEnchantment(Attributes.ATTACK_DAMAGE_PCT);
         Enchantment.registerEnchantment(Attributes.ATTACK_DAMAGE_RAW);
         Enchantment.registerEnchantment(Attributes.LIGHTWEIGHT);
+        Enchantment.registerEnchantment(Attributes.HEALTH);
+        Enchantment.registerEnchantment(Attributes.ARMOR);
+        Enchantment.registerEnchantment(Attributes.TOUGHNESS);
         enchantLock(false);
         registerCommands();
         registerEvents();
@@ -78,6 +84,9 @@ public class ItemAbilities extends JavaPlugin {
         ATTRIBUTE_ATTACK_DAMAGE_PCT = PluginWrapper.newNameSpacedKey("atkdmgpct");
         ATTRIBUTE_ATTACK_DAMAGE_RAW = PluginWrapper.newNameSpacedKey("atkdmgraw");
         ATTRIBUTE_LIGHTWEIGHT = PluginWrapper.newNameSpacedKey("lightweight");
+        ATTRIBUTE_HEALTH = PluginWrapper.newNameSpacedKey("health");
+        ATTRIBUTE_ARMOR = PluginWrapper.newNameSpacedKey("armor");
+        ATTRIBUTE_TOUGHNESS = PluginWrapper.newNameSpacedKey("toughness");
     }
 
     /**
