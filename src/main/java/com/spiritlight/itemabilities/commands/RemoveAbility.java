@@ -52,6 +52,7 @@ public class RemoveAbility extends CommandBase {
             }
             i.setItemMeta(meta);
             ((Player) sender).getInventory().getItemInMainHand().setItemMeta(meta);
+            i.removeEnchantment(ability);
             sender.sendMessage("The ability has been removed from this item!");
             return true;
         } catch (Exception t) {
