@@ -22,6 +22,11 @@ public class CAbilityLightweight implements Listener {
                 modifier *= mod;
             }
             System.out.println("Final reduction modifier: " + (1 - modifier));
+            if(modifier <= 0) {
+                System.out.println("Negated fall damage");
+                event.setCancelled(true);
+                return;
+            }
             event.setDamage(event.getDamage() * modifier);
         }
     }
