@@ -99,6 +99,9 @@ public class AddAttribute implements CommandExecutor, TabCompleter {
             i.addEnchantment(ability, level);
             sender.sendMessage("The ability has been added to this item!");
             return true;
+        } catch (IllegalArgumentException e) {
+          sender.sendMessage("Invalid modifier! (Is it too high, or too low?)");
+          return true;
         } catch (Exception t) {
             t.printStackTrace();
             return false;

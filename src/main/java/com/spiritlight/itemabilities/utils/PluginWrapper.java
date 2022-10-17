@@ -45,15 +45,13 @@ public class PluginWrapper {
         return new NamespacedKey(ItemAbilities.INSTANCE, key);
     }
 
-    @CheckReturnValue
     public static int scheduleTask(Runnable exec, long delayTick) {
         return Bukkit.getScheduler().scheduleSyncDelayedTask(ItemAbilities.INSTANCE, exec, delayTick);
     }
 
     /**
-     * @see org.bukkit.scheduler.BukkitScheduler#scheduleSyncRepeatingTask(Plugin, Runnable, long, long) 
+     * @see org.bukkit.scheduler.BukkitScheduler#scheduleSyncRepeatingTask(Plugin, Runnable, long, long)
      */
-    @CheckReturnValue
     public static int scheduleRepeatTask(Runnable exec, long delayTick, long periodTick) {
         return Bukkit.getScheduler().scheduleSyncRepeatingTask(ItemAbilities.INSTANCE, exec, delayTick, periodTick);
     }

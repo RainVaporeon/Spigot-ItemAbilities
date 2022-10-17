@@ -13,20 +13,24 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+// Attributes can and should be assignable to breakable items.
 public class Attributes {
 
+    // Level 1 due to attributes not depending on enchantment
     public static final Ability SPEED = PluginWrapper.newAbility(
             ItemAbilities.ATTRIBUTE_SPEED, "speed", "% Movement Speed",
             new String[0], true, 1, EnchantmentTarget.BREAKABLE,
             false, null, null
     );
 
+    // Level 1 due to attributes not depending on enchantment
     public static final Ability ATTACK_DAMAGE_PCT = PluginWrapper.newAbility(
             ItemAbilities.ATTRIBUTE_ATTACK_DAMAGE_PCT, "atkdmgpct", "% Attack Damage",
             new String[0], true, 1, EnchantmentTarget.BREAKABLE,
             false, null, null
     );
 
+    // Level 1 due to attributes not depending on enchantment
     public static final Ability ATTACK_DAMAGE_RAW = PluginWrapper.newAbility(
             ItemAbilities.ATTRIBUTE_ATTACK_DAMAGE_RAW, "atkdmgraw", " Attack Damage",
             new String[0], true, 1, EnchantmentTarget.BREAKABLE,
@@ -35,7 +39,7 @@ public class Attributes {
 
     public static final Ability LIGHTWEIGHT = PluginWrapper.newAbility(
             ItemAbilities.ATTRIBUTE_LIGHTWEIGHT, "lightweight", "% Reduced Fall Damage",
-            new String[0], true, 100, EnchantmentTarget.BREAKABLE,
+            new String[0], true, 32767, EnchantmentTarget.BREAKABLE,
             false, null, null
     );
 

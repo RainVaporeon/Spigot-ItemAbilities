@@ -33,7 +33,12 @@ public abstract class Ability extends Enchantment {
 
     @Override
     public int getStartLevel() {
-        return 0;
+        return -32767;
+    }
+
+    @Override
+    public int getMaxLevel() {
+        return 32767;
     }
 
     public final List<String> descriptionList = new ArrayList<>() {{

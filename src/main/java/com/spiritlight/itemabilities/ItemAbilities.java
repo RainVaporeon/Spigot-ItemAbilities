@@ -18,6 +18,8 @@ public class ItemAbilities extends JavaPlugin {
     public static JavaPlugin INSTANCE;
     public static NamespacedKey ABILITY_TRACER;
     public static NamespacedKey ABILITY_GUARDIAN;
+    public static NamespacedKey ABILITY_STRIKEBACK;
+    public static NamespacedKey ABILITY_DOUBLESTRIKE;
     public static NamespacedKey ATTRIBUTE_SPEED;
     public static NamespacedKey ATTRIBUTE_ATTACK_DAMAGE_PCT;
     public static NamespacedKey ATTRIBUTE_ATTACK_DAMAGE_RAW;
@@ -52,6 +54,9 @@ public class ItemAbilities extends JavaPlugin {
         // Register abilities and attribute notes
         Enchantment.registerEnchantment(VAbilityTracer.ability);
         Enchantment.registerEnchantment(CAbilityGuardian.ability);
+        Enchantment.registerEnchantment(CAbilityStrikeBack.ability);
+        Enchantment.registerEnchantment(CAbilityDoubleStrike.ability);
+
         Enchantment.registerEnchantment(Attributes.SPEED);
         Enchantment.registerEnchantment(Attributes.ATTACK_DAMAGE_PCT);
         Enchantment.registerEnchantment(Attributes.ATTACK_DAMAGE_RAW);
@@ -62,8 +67,13 @@ public class ItemAbilities extends JavaPlugin {
     }
 
     private void registerNameSpace() {
+        /* Abilities */
         ABILITY_TRACER = PluginWrapper.newNameSpacedKey("tracer");
         ABILITY_GUARDIAN = PluginWrapper.newNameSpacedKey("guardian");
+        ABILITY_STRIKEBACK = PluginWrapper.newNameSpacedKey("strikeback");
+        ABILITY_DOUBLESTRIKE = PluginWrapper.newNameSpacedKey("double_strike");
+
+        /* Attributes */
         ATTRIBUTE_SPEED = PluginWrapper.newNameSpacedKey("speed");
         ATTRIBUTE_ATTACK_DAMAGE_PCT = PluginWrapper.newNameSpacedKey("atkdmgpct");
         ATTRIBUTE_ATTACK_DAMAGE_RAW = PluginWrapper.newNameSpacedKey("atkdmgraw");
@@ -76,6 +86,8 @@ public class ItemAbilities extends JavaPlugin {
     private void registerAbilityMap() {
         abilityMap.put(VAbilityTracer.ability.getAbilityName(), VAbilityTracer.ability);
         abilityMap.put(CAbilityGuardian.ability.getAbilityName(), CAbilityGuardian.ability);
+        abilityMap.put(CAbilityStrikeBack.ability.getAbilityName(), CAbilityStrikeBack.ability);
+        abilityMap.put(CAbilityDoubleStrike.ability.getAbilityName(), CAbilityDoubleStrike.ability);
     }
 
     private void enchantLock(boolean access) throws ReflectiveOperationException {
@@ -100,5 +112,7 @@ public class ItemAbilities extends JavaPlugin {
         this.getServer().getPluginManager().registerEvents(new VAbilityTracer(), this);
         this.getServer().getPluginManager().registerEvents(new CAbilityGuardian(), this);
         this.getServer().getPluginManager().registerEvents(new CAbilityLightweight(), this);
+        this.getServer().getPluginManager().registerEvents(new CAbilityStrikeBack(), this);
+        this.getServer().getPluginManager().registerEvents(new CAbilityDoubleStrike(), this);
     }
 }
