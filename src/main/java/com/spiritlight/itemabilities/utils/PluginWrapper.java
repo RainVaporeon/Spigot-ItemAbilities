@@ -187,7 +187,7 @@ public class PluginWrapper {
         Map<Currency, Integer> map = getTypeAndQuantity(amount);
         for(Currency currency : map.keySet()) {
             ItemStack stack = new ItemStack(currency.material);
-            ItemMeta meta = new SpiritItemMeta();
+            ItemMeta meta = stack.getItemMeta();
             meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
             meta.addEnchant(EnchantmentUtils.CURRENCY, 1, true);
             stack.setItemMeta(meta);
