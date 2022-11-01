@@ -27,6 +27,10 @@ public class EnchantmentUtils {
         return entityHasEnchantment(entity, enchantment, null);
     }
 
+    public static boolean hasEnchant(ItemStack stack, Enchantment enchantment) {
+        return stack.clone().removeEnchantment(enchantment) != 0;
+    }
+
     public static boolean entityHasEnchantment(LivingEntity entity, Enchantment enchantment, EnchantmentTarget target) {
         boolean hasEquipments = entity.getEquipment() != null;
         if(!hasEquipments) return false;

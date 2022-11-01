@@ -2,6 +2,7 @@ package com.spiritlight.itemabilities;
 
 import com.spiritlight.itemabilities.abilities.*;
 import com.spiritlight.itemabilities.commands.*;
+import com.spiritlight.itemabilities.listeners.ItemUsedListener;
 import com.spiritlight.itemabilities.utils.CommandBase;
 import com.spiritlight.itemabilities.utils.EnchantmentUtils;
 import com.spiritlight.itemabilities.utils.PluginWrapper;
@@ -146,6 +147,7 @@ public class ItemAbilities extends JavaPlugin {
         registerEvent(new CAbilityLightweight());
         registerEvent(new CAbilityStrikeBack());
         registerEvent(new CAbilityDoubleStrike());
+        registerEvent(new ItemUsedListener());
     }
 
     private void registerEvent(Listener l) {

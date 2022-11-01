@@ -3,6 +3,7 @@ package com.spiritlight.itemabilities.utils;
 import com.spiritlight.itemabilities.ItemAbilities;
 import com.spiritlight.itemabilities.abilities.Ability;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
@@ -14,10 +15,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
 
@@ -186,11 +184,17 @@ public class PluginWrapper {
     public static void getCurrency(Player sender, int amount) {
         Map<Currency, Integer> map = getTypeAndQuantity(amount);
         for(Currency currency : map.keySet()) {
+            if(map.get(currency).equals(0)) continue;
             ItemStack stack = new ItemStack(currency.material);
             ItemMeta meta = stack.getItemMeta();
             meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
             meta.addEnchant(EnchantmentUtils.CURRENCY, 1, true);
+            meta.setDisplayName(ChatColor.GOLD + currency.toString());
+            meta.setLore(List.of("",
+                    ChatColor.YELLOW + "Potato Economy",
+                    ChatColor.GOLD + "Worth " + ChatColor.GREEN + currency.amount + ChatColor.GOLD + " Potatoes"));
             stack.setItemMeta(meta);
+            stack.setAmount(map.get(currency));
             sender.getInventory().addItem(stack);
         }
     }
@@ -198,7 +202,7 @@ public class PluginWrapper {
     private static Map<Currency, Integer> getTypeAndQuantity(int parse) {
         Map<Currency, Integer> ret = new HashMap<>();
         for(Currency currency : Arrays.stream(Currency.values()).sorted(
-                Comparator.comparingInt(a -> a.amount)
+                (a, b) -> b.amount - a.amount
         ).toList()) {
             ret.put(currency, parse / currency.amount);
             parse %= currency.amount;
@@ -213,7 +217,7 @@ public class PluginWrapper {
         CONDENSED(1024, Material.GOLD_BLOCK), // 1024
         POWDERED(4096, Material.GLOWSTONE_DUST), // 4096
         LIQUID(16384, Material.HONEY_BOTTLE), // 16384
-        STACK(65536, Material.BUNDLE), // 65536
+        STACK(65536, Material.COCOA_BEANS), // 65536
         PLASMA(262144, Material.DRAGON_BREATH); // 262144
 
         public final int amount;
