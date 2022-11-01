@@ -20,11 +20,11 @@ import java.util.*;
 @SuppressWarnings("MethodDoesntCallSuperMethod")
 public class SpiritItemMeta implements ItemMeta {
     private String displayName = "";
-    private List<String> lore = Collections.emptyList();
+    private List<String> lore = new ArrayList<>();
     private String localizedName = "";
     private int modelData = 0;
-    private Map<Enchantment, Integer> enchantments = Collections.emptyMap();
-    private Set<ItemFlag> itemFlags = Collections.emptySet();
+    private Map<Enchantment, Integer> enchantments = new HashMap<>();
+    private Set<ItemFlag> itemFlags = new HashSet<>();
     private boolean unbreakable = false;
     @Nullable
     private Multimap<Attribute, AttributeModifier> attributeMap = null;

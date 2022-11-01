@@ -15,6 +15,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Level;
 
 public class AddAbility extends CommandBase {
 
@@ -47,7 +48,7 @@ public class AddAbility extends CommandBase {
                 return true;
             }
             if(meta == null) {
-                System.out.println("Item has no meta. Creating a new one.");
+                ItemAbilities.logger.log(Level.INFO, "Item has no meta. Creating a new one.");
                 meta = new SpiritItemMeta(i.getItemMeta());
             }
             // assert i.getItemMeta() != null
@@ -56,9 +57,9 @@ public class AddAbility extends CommandBase {
                     List<String> lore = Objects.requireNonNull(meta.getLore());
                     lore.addAll(ability.descriptionList);
                     meta.setLore(lore);
-                    System.out.println("Appended lore!");
+                    ItemAbilities.logger.log(Level.INFO, "Appended lore!");
                 } else {
-                    System.out.println("Added lore!");
+                    ItemAbilities.logger.log(Level.INFO, "Added lore!");
                     meta.setLore(ability.descriptionList);
                 }
             }

@@ -13,6 +13,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 
 /**
  * Registering namespaces - {@link ItemAbilities#registerNameSpace()}
@@ -27,6 +28,7 @@ import java.util.Map;
  */
 public class ItemAbilities extends JavaPlugin {
     public static JavaPlugin INSTANCE;
+    public static Logger logger;
 
     public static NamespacedKey ABILITY_TRACER;
     public static NamespacedKey ABILITY_GUARDIAN;
@@ -51,6 +53,7 @@ public class ItemAbilities extends JavaPlugin {
     @Override
     public void onEnable() {
         INSTANCE = this;
+        logger = this.getLogger();
         if(!initFinish) {
             try {
                 init();

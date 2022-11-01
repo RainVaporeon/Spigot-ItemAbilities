@@ -15,6 +15,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
 
 /**
  * Combat ability: Tracer<br>
@@ -33,9 +34,9 @@ public class VAbilityTracer implements Listener {
     public void onBowShot(@NotNull EntityShootBowEvent event) {
         if (event.getBow() == null) return;
         if (!PluginWrapper.containsEnchantment(event.getBow(), ability)) {
-            System.out.println("Entity shot bow, but does not have the ability!");
+            ItemAbilities.logger.log(Level.INFO, "Entity shot bow, but does not have the ability!");
             return;
-        } else System.out.println("Entity shot bow and has the ability.");
+        } else ItemAbilities.logger.log(Level.INFO, "Entity shot bow and has the ability.");
         final Entity projectile = event.getProjectile();
         final int task = PluginWrapper.scheduleRepeatTask(() -> {
             try {

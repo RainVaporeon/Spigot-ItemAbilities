@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.logging.Level;
 
 // Attributes can and should be assignable to breakable items.
 public class Attributes {
@@ -95,7 +96,7 @@ public class Attributes {
     }};
 
     public static String getAttributeText(Ability attribute, int modifier) {
-        System.out.println("Acquiring attribute text with modifier " + modifier + " and attribute " + attribute.getAbilityName());
+        ItemAbilities.logger.log(Level.INFO, "Acquiring attribute text with modifier " + modifier + " and attribute " + attribute.getAbilityName());
         return (modifier >= 0 ? ChatColor.GREEN + (modifier > 0 ? "+" : "") : ChatColor.RED) + Integer.toString(modifier) + ChatColor.GRAY + attribute.getAbilityName();
     }
 

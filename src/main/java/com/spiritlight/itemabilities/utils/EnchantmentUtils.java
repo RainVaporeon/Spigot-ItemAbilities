@@ -12,7 +12,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class EnchantmentUtils {
-    public static Enchantment CURRENCY = PluginWrapper.newAbility(
+    public static final Enchantment CURRENCY = PluginWrapper.newAbility(
             ItemAbilities.CURRENCY, "currency", "Currency",
             new String[0], false, 0, EnchantmentTarget.ALL,
             false, null, null

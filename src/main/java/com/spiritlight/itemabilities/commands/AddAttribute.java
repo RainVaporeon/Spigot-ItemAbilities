@@ -1,5 +1,6 @@
 package com.spiritlight.itemabilities.commands;
 
+import com.spiritlight.itemabilities.ItemAbilities;
 import com.spiritlight.itemabilities.abilities.Ability;
 import com.spiritlight.itemabilities.abilities.Attributes;
 import com.spiritlight.itemabilities.utils.CommandBase;
@@ -7,9 +8,7 @@ import com.spiritlight.itemabilities.utils.PluginWrapper;
 import com.spiritlight.itemabilities.utils.SpiritItemMeta;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -20,6 +19,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Level;
 
 public class AddAttribute extends CommandBase {
     @Override
@@ -65,7 +65,7 @@ public class AddAttribute extends CommandBase {
                 return true;
             }
             if (meta == null) {
-                System.out.println("Item has no meta. Creating a new one.");
+                ItemAbilities.logger.log(Level.INFO, "Item has no meta. Creating a new one.");
                 meta = new SpiritItemMeta(i.getItemMeta());
             }
             // assert i.getItemMeta() != null
@@ -73,9 +73,9 @@ public class AddAttribute extends CommandBase {
                 List<String> lore = Objects.requireNonNull(meta.getLore());
                 lore.add(Attributes.getAttributeText(ability, modifier));
                 meta.setLore(lore);
-                System.out.println("Appended lore!");
+                ItemAbilities.logger.log(Level.INFO, "Appended lore!");
             } else {
-                System.out.println("Added lore!");
+                ItemAbilities.logger.log(Level.INFO, "Added lore!");
                 meta.setLore(Collections.singletonList(Attributes.getAttributeText(ability, modifier)));
             }
             Attributes.Modifier attribute = Attributes.getAttribute(ability);

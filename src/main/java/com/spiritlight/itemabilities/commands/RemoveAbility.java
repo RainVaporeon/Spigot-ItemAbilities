@@ -12,6 +12,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.logging.Level;
 
 public class RemoveAbility extends CommandBase {
 
@@ -48,7 +49,7 @@ public class RemoveAbility extends CommandBase {
                 lore.removeIf(ability.descriptionList::contains);
                 lore.remove(lore.size() - 1);
                 meta.setLore(lore);
-                System.out.println("Lore removed!");
+                ItemAbilities.logger.log(Level.INFO, "Lore removed!");
             }
             i.setItemMeta(meta);
             ((Player) sender).getInventory().getItemInMainHand().setItemMeta(meta);
