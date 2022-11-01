@@ -25,3 +25,8 @@ commands:
     usage: /removeattribute <attribute>
     permission: itemabilities.removeattribute
     permission-message: You are not allowed to use this command!
+  currency:
+    description: Gives you x currency.
+    usage: /currency <amount>
+    permission: itemabilities.currency
+    permission-message: You are not allowed to use this command!

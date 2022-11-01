@@ -75,7 +75,7 @@ public class RemoveAttribute extends CommandBase {
             }
             i.setItemMeta(meta);
             ((Player) sender).getInventory().getItemInMainHand().setItemMeta(meta);
-            i.removeEnchantment(ability); // Lightweight also gets removed
+            i.removeEnchantment(ability); // Lightweight also gets removed by this operation
             sender.sendMessage("The ability has been removed from this item!");
             return true;
         } catch (Exception t) {

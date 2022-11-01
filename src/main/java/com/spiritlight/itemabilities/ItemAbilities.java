@@ -1,11 +1,9 @@
 package com.spiritlight.itemabilities;
 
 import com.spiritlight.itemabilities.abilities.*;
-import com.spiritlight.itemabilities.commands.AddAbility;
-import com.spiritlight.itemabilities.commands.AddAttribute;
-import com.spiritlight.itemabilities.commands.RemoveAbility;
-import com.spiritlight.itemabilities.commands.RemoveAttribute;
+import com.spiritlight.itemabilities.commands.*;
 import com.spiritlight.itemabilities.utils.CommandBase;
+import com.spiritlight.itemabilities.utils.EnchantmentUtils;
 import com.spiritlight.itemabilities.utils.PluginWrapper;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
@@ -16,12 +14,25 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Registering namespaces - {@link ItemAbilities#registerNameSpace()}
+ * <br><br>
+ * Registering commands - {@link ItemAbilities#registerCommands()}
+ * <br><br>
+ * Registering ability mapping - {@link ItemAbilities#registerAbilityMap()}
+ * <br><br>
+ * Event listeners - {@link ItemAbilities#registerEvents()}
+ * <br><br>
+ * Registering enchantments - {@link ItemAbilities#init()}
+ */
 public class ItemAbilities extends JavaPlugin {
     public static JavaPlugin INSTANCE;
+
     public static NamespacedKey ABILITY_TRACER;
     public static NamespacedKey ABILITY_GUARDIAN;
     public static NamespacedKey ABILITY_STRIKEBACK;
     public static NamespacedKey ABILITY_DOUBLESTRIKE;
+
     public static NamespacedKey ATTRIBUTE_SPEED;
     public static NamespacedKey ATTRIBUTE_ATTACK_DAMAGE_PCT;
     public static NamespacedKey ATTRIBUTE_ATTACK_DAMAGE_RAW;
@@ -29,7 +40,11 @@ public class ItemAbilities extends JavaPlugin {
     public static NamespacedKey ATTRIBUTE_HEALTH;
     public static NamespacedKey ATTRIBUTE_ARMOR;
     public static NamespacedKey ATTRIBUTE_TOUGHNESS;
+
+    public static NamespacedKey CURRENCY;
+
     public static final Map<String, Ability> abilityMap = new HashMap<>();
+
     private boolean initFinish = false;
 
 
@@ -69,6 +84,8 @@ public class ItemAbilities extends JavaPlugin {
         Enchantment.registerEnchantment(Attributes.HEALTH);
         Enchantment.registerEnchantment(Attributes.ARMOR);
         Enchantment.registerEnchantment(Attributes.TOUGHNESS);
+
+        Enchantment.registerEnchantment(EnchantmentUtils.CURRENCY);
         enchantLock(false);
         registerCommands();
         registerEvents();
@@ -89,6 +106,9 @@ public class ItemAbilities extends JavaPlugin {
         ATTRIBUTE_HEALTH = PluginWrapper.newNameSpacedKey("health");
         ATTRIBUTE_ARMOR = PluginWrapper.newNameSpacedKey("armor");
         ATTRIBUTE_TOUGHNESS = PluginWrapper.newNameSpacedKey("toughness");
+
+        /* Currency */
+        CURRENCY = PluginWrapper.newNameSpacedKey("currency");
     }
 
     /**
@@ -113,6 +133,7 @@ public class ItemAbilities extends JavaPlugin {
         this.setExecutorAndTabComplete("removeability", new RemoveAbility());
         this.setExecutorAndTabComplete("addattribute", new AddAttribute());
         this.setExecutorAndTabComplete("removeattribute", new RemoveAttribute());
+        this.setExecutorAndTabComplete("currency", new Currency());
     }
 
     // Register event listeners to make ability trigger

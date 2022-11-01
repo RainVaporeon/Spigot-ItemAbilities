@@ -1,5 +1,6 @@
 package com.spiritlight.itemabilities.utils;
 
+import com.spiritlight.itemabilities.ItemAbilities;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.enchantments.EnchantmentTarget;
 import org.bukkit.entity.LivingEntity;
@@ -11,6 +12,12 @@ import java.util.Collections;
 import java.util.List;
 
 public class EnchantmentUtils {
+    public static Enchantment CURRENCY = PluginWrapper.newAbility(
+            ItemAbilities.CURRENCY, "currency", "Currency",
+            new String[0], false, 0, EnchantmentTarget.ALL,
+            false, null, null
+    );
+
     public static int getEnchantmentLevel(ItemStack itemStack, Enchantment enchantment) {
         ItemStack i0 = itemStack.clone();
         return i0.removeEnchantment(enchantment);
