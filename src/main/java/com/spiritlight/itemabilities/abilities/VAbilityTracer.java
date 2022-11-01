@@ -33,10 +33,8 @@ public class VAbilityTracer implements Listener {
     @EventHandler
     public void onBowShot(@NotNull EntityShootBowEvent event) {
         if (event.getBow() == null) return;
-        if (!PluginWrapper.containsEnchantment(event.getBow(), ability)) {
-            ItemAbilities.logger.log(Level.INFO, "Entity shot bow, but does not have the ability!");
+        if (!PluginWrapper.containsEnchantment(event.getBow(), ability))
             return;
-        } else ItemAbilities.logger.log(Level.INFO, "Entity shot bow and has the ability.");
         final Entity projectile = event.getProjectile();
         final int task = PluginWrapper.scheduleRepeatTask(() -> {
             try {

@@ -39,10 +39,6 @@ public class AddAbility extends CommandBase {
         try {
             ItemStack i = ((Player) sender).getInventory().getItemInMainHand();
             ItemMeta meta = i.getItemMeta();
-            if(!ability.getItemTarget().includes(i)) {
-                sender.sendMessage("This ability is incompatible with this item!");
-                return true;
-            }
             if(PluginWrapper.containsEnchantment(i, ability)) {
                 sender.sendMessage("You cannot have duplicate abilities!");
                 return true;

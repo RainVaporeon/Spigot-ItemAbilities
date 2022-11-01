@@ -19,6 +19,7 @@ public class EnchantmentUtils {
     );
 
     public static int getEnchantmentLevel(ItemStack itemStack, Enchantment enchantment) {
+        if(itemStack == null || enchantment == null) return 0;
         ItemStack i0 = itemStack.clone();
         return i0.removeEnchantment(enchantment);
     }
@@ -28,10 +29,12 @@ public class EnchantmentUtils {
     }
 
     public static boolean hasEnchant(ItemStack stack, Enchantment enchantment) {
+        if(stack == null || enchantment == null) return false;
         return stack.clone().removeEnchantment(enchantment) != 0;
     }
 
     public static boolean entityHasEnchantment(LivingEntity entity, Enchantment enchantment, EnchantmentTarget target) {
+        if(entity == enchantment) return false; // null
         boolean hasEquipments = entity.getEquipment() != null;
         if(!hasEquipments) return false;
         final EntityEquipment equipment = entity.getEquipment();
@@ -53,6 +56,7 @@ public class EnchantmentUtils {
     }
 
     public static List<ItemStack> getEnchantedItems(LivingEntity entity, Enchantment enchantment, EnchantmentTarget target) {
+        if(entity == null || enchantment == null || target == null) return Collections.emptyList();
         final List<ItemStack> ret = new ArrayList<>();
         boolean hasEquipments = entity.getEquipment() != null;
         if(!hasEquipments) return Collections.emptyList();
@@ -60,11 +64,11 @@ public class EnchantmentUtils {
         ItemStack[] armorContents = equipment.getArmorContents();
         ItemStack[] handItems = new ItemStack[] {equipment.getItemInMainHand(), equipment.getItemInOffHand()};
         for(ItemStack i : armorContents) {
-            if(target != null && !target.includes(i)) continue;
+            if(!target.includes(i)) continue;
             if(PluginWrapper.containsEnchantment(i, enchantment)) ret.add(i);
         }
         for(ItemStack i : handItems) {
-            if(target != null && !target.includes(i)) continue;
+            if(!target.includes(i)) continue;
             if(PluginWrapper.containsEnchantment(i, enchantment)) ret.add(i);
         }
         return ret;

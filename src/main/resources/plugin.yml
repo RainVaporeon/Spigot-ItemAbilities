@@ -30,3 +30,12 @@ commands:
     usage: /currency <amount>
     permission: itemabilities.currency
     permission-message: You are not allowed to use this command!
+  exchange:
+    description: Exchanges your potatoes for the currency.
+    usage: /exchange [amount]
+    permission: itemabilities.exchange
+    default: true
+
+permissions:
+  itemabilities.exchange:
+    default: true

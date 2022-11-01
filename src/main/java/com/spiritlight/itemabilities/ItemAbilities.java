@@ -14,6 +14,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -48,7 +49,7 @@ public class ItemAbilities extends JavaPlugin {
 
     public static final Map<String, Ability> abilityMap = new HashMap<>();
 
-    private boolean initFinish = false;
+    private static boolean initFinish = false;
 
 
     @Override
@@ -60,7 +61,11 @@ public class ItemAbilities extends JavaPlugin {
                 init();
             } catch (ReflectiveOperationException e) {
                 Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
+            } catch (IllegalArgumentException e) {
+                // no-op, enchantment already set-up, indicates finish of initialization
+                logger.log(Level.WARNING, "init() likely called more than once. initFinish: " + initFinish);
             }
+            initFinish = true;
         }
     }
 
@@ -71,9 +76,12 @@ public class ItemAbilities extends JavaPlugin {
 
     // registers enchantments etc
     private void init() throws ReflectiveOperationException {
-        initFinish = true;
         registerNameSpace();
         registerAbilityMap();
+
+        registerCommands();
+        registerEvents();
+
         enchantLock(true);
         // Register abilities and attribute notes
         Enchantment.registerEnchantment(VAbilityTracer.ability);
@@ -91,8 +99,8 @@ public class ItemAbilities extends JavaPlugin {
 
         Enchantment.registerEnchantment(EnchantmentUtils.CURRENCY);
         enchantLock(false);
-        registerCommands();
-        registerEvents();
+
+        initFinish = true;
     }
 
     private void registerNameSpace() {
@@ -138,6 +146,7 @@ public class ItemAbilities extends JavaPlugin {
         this.setExecutorAndTabComplete("addattribute", new AddAttribute());
         this.setExecutorAndTabComplete("removeattribute", new RemoveAttribute());
         this.setExecutorAndTabComplete("currency", new Currency());
+        this.setExecutorAndTabComplete("exchange", new ExchangeCommand());
     }
 
     // Register event listeners to make ability trigger
