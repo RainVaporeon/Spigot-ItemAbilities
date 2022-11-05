@@ -3,13 +3,12 @@ package com.spiritlight.itemabilities.commands;
 import com.spiritlight.itemabilities.ItemAbilities;
 import com.spiritlight.itemabilities.abilities.Ability;
 import com.spiritlight.itemabilities.abilities.Attributes;
-import com.spiritlight.itemabilities.utils.CommandBase;
-import com.spiritlight.itemabilities.utils.PluginWrapper;
-import com.spiritlight.itemabilities.utils.SpiritItemMeta;
+import com.spiritlight.itemabilities.utils.*;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -40,6 +39,7 @@ public class AddAttribute extends CommandBase {
 
         /* Initializing variables, determine the attribute and modifiers. */
         Ability ability = Attributes.fromString(args[0]);
+        EquipmentSlot slot = null;
         int modifier;
         int level = 1;
         try {
@@ -48,7 +48,10 @@ public class AddAttribute extends CommandBase {
             sender.sendMessage("Cannot parse the given modifier!");
             return true;
         }
-
+        try {
+            slot = StringUtils.getSlotByString(args[2]);
+        } catch (IndexOutOfBoundsException ignored) {
+        }
         /* Checks whether the modifier is valid, we already are using a different ability map here! */
         if (ability == null) {
             sender.sendMessage("You need to specify a correct ability name!");
@@ -70,10 +73,9 @@ public class AddAttribute extends CommandBase {
             }
             // assert i.getItemMeta() != null
             if (meta.hasLore()) {
-                List<String> lore = new ArrayList<>();
-                lore.add(Attributes.getAttributeText(ability, modifier));
-                lore.addAll(meta.getLore());
-                meta.setLore(lore);
+                LoreBuilder lb = new LoreBuilder(meta.getLore())
+                    .append(Attributes.getAttributeText(ability, modifier));
+                meta.setLore(lb.build());
                 ItemAbilities.logger.log(Level.INFO, "Appended lore!");
             } else {
                 ItemAbilities.logger.log(Level.INFO, "Added lore!");
@@ -89,7 +91,8 @@ public class AddAttribute extends CommandBase {
                     meta.addAttributeModifier(attribute.getType(), new AttributeModifier(
                             attribute.getUuid(), attribute.getName(),
                             attribute.getOperation() == AttributeModifier.Operation.ADD_NUMBER ? modifier : modifier / 100.0F,
-                            attribute.getOperation()));
+                            attribute.getOperation(),
+                            slot));
                     meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
                 } catch (IllegalArgumentException e) {
                     sender.sendMessage("There seems to be an modifier that already exists!");
@@ -115,7 +118,10 @@ public class AddAttribute extends CommandBase {
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if(args.length == 1)
-            return Attributes.getAvailableAttributeNames().stream().toList();
+            return StringUtils.filterByRelevance(Attributes.getAvailableAttributeNames().stream().toList(), args[0]);
+        if(args.length == 3) {
+            return StringUtils.equipmentMap.keySet().stream().toList();
+        }
         return Collections.emptyList();
     }
 }

@@ -5,6 +5,7 @@ import com.spiritlight.itemabilities.abilities.Ability;
 import com.spiritlight.itemabilities.utils.CommandBase;
 import com.spiritlight.itemabilities.utils.PluginWrapper;
 import com.spiritlight.itemabilities.utils.SpiritItemMeta;
+import com.spiritlight.itemabilities.utils.StringUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -74,6 +75,9 @@ public class AddAbility extends CommandBase {
     @Nullable
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+        if(args.length == 1) {
+            return StringUtils.filterByRelevance(ItemAbilities.abilityMap.keySet().stream().toList(), args[0]);
+        }
         return ItemAbilities.abilityMap.keySet().stream().toList();
     }
 }

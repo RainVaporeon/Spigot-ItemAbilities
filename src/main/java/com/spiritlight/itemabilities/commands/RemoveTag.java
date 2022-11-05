@@ -3,10 +3,7 @@ package com.spiritlight.itemabilities.commands;
 import com.spiritlight.itemabilities.ItemAbilities;
 import com.spiritlight.itemabilities.abilities.Ability;
 import com.spiritlight.itemabilities.abilities.Tags;
-import com.spiritlight.itemabilities.utils.CommandBase;
-import com.spiritlight.itemabilities.utils.LoreBuilder;
-import com.spiritlight.itemabilities.utils.PluginWrapper;
-import com.spiritlight.itemabilities.utils.SpiritItemMeta;
+import com.spiritlight.itemabilities.utils.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -76,6 +73,9 @@ public class RemoveTag extends CommandBase {
     @Nullable
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+        if(args.length == 1) {
+            return StringUtils.filterByRelevance(Tags.names, args[0]);
+        }
         return Tags.names;
     }
 }

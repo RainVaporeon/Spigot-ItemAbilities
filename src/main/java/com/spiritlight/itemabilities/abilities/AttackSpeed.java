@@ -20,14 +20,14 @@ public enum AttackSpeed {
     Hoe:  1  /  2  / 1 /  3  / 4 / 4  Attack Speed
     Generic Items: 4 Attack Speed
      */
-    ULTRA_FAST(20 / 4F, "ULTRA_FAST"),
-    SUPER_FAST(20 / 3F, "SUPER_FAST"),
-    VERY_FAST(20 / 2.6F, "VERY_FAST"),
-    FAST(20 / 2.2F, "FAST"),
-    NORMAL(20 / 1.6F, "NORMAL"),
-    SLOW(20, "SLOW"),
-    VERY_SLOW(20 / 0.8F, "VERY_SLOW"),
-    SUPER_SLOW(20 / 0.5F, "SUPER_SLOW");
+    ULTRA_FAST(4F - 4, "ULTRA_FAST"),
+    SUPER_FAST(3F - 4, "SUPER_FAST"),
+    VERY_FAST(2.6F - 4, "VERY_FAST"),
+    FAST(2.2F - 4, "FAST"),
+    NORMAL(1.6F - 4, "NORMAL"),
+    SLOW(1 - 4, "SLOW"),
+    VERY_SLOW(0.8F - 4, "VERY_SLOW"),
+    SUPER_SLOW(0.5F - 4, "SUPER_SLOW");
 
     private final float modifier;
     private final String name;

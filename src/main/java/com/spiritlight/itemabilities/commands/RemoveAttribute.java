@@ -3,9 +3,7 @@ package com.spiritlight.itemabilities.commands;
 import com.spiritlight.itemabilities.ItemAbilities;
 import com.spiritlight.itemabilities.abilities.Ability;
 import com.spiritlight.itemabilities.abilities.Attributes;
-import com.spiritlight.itemabilities.utils.CommandBase;
-import com.spiritlight.itemabilities.utils.PluginWrapper;
-import com.spiritlight.itemabilities.utils.SpiritItemMeta;
+import com.spiritlight.itemabilities.utils.*;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -57,26 +55,25 @@ public class RemoveAttribute extends CommandBase {
             }
             // assert i.getItemMeta() != null
             if (meta.hasLore()) {
-                List<String> lore = Objects.requireNonNull(meta.getLore());
-                lore.remove(Attributes.getAttributeText(ability, meta.getEnchantLevel(ability)));
-                meta.setLore(lore);
+                LoreBuilder lb = new LoreBuilder(meta.getLore())
+                        .removeLine(Attributes.getAttributeText(ability, EnchantmentUtils.getEnchantmentLevel(i, ability)));
+                meta.setLore(lb.build());
                 ItemAbilities.logger.log(Level.INFO, "Removed lore!");
             }
             Attributes.Modifier attribute = Attributes.getAttribute(ability);
             if (attribute != null) {
                 // Generally speaking we should have only one attribute
-                meta.removeAttributeModifier(attribute.getType(), new AttributeModifier(attribute.getUuid(),
-                        attribute.getName(),
-                        meta.getAttributeModifiers(attribute.getType())
-                                .stream()
-                                .filter(f -> f.getUniqueId().equals(attribute.getUuid()))
-                                .toList().get(0).getAmount(),
-                        attribute.getOperation()));
+                try {
+                    AttributeModifier trim = meta.getAttributeModifiers().get(attribute.getType()).stream().filter(
+                            a -> a.getName().equals(attribute.getName())
+                    ).toList().get(0);
+                    meta.removeAttributeModifier(attribute.getType(), trim);
+                } catch (Exception e) {
+                    sender.sendMessage("There doesn't seem to be an attribute associated to this item.");
+                }
             }
             meta.removeEnchant(ability);
             i.setItemMeta(meta);
-            // ((Player) sender).getInventory().getItemInMainHand().setItemMeta(meta);
-            // ((Player) sender).getInventory().getItemInMainHand().removeEnchantment(ability); // Lightweight also gets removed by this operation
             sender.sendMessage("The ability has been removed from this item!");
             return true;
         } catch (Exception t) {
@@ -89,7 +86,7 @@ public class RemoveAttribute extends CommandBase {
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if(args.length == 1)
-            return Attributes.getAvailableAttributeNames().stream().toList();
+            return StringUtils.filterByRelevance(Attributes.getAvailableAttributeNames().stream().toList(), args[0]);
         return Collections.emptyList();
     }
 }

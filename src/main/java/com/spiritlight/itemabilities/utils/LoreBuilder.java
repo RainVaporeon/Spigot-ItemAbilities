@@ -21,22 +21,33 @@ public class LoreBuilder {
         this.lore = Objects.requireNonNullElseGet(lore, ArrayList::new);
     }
 
+    // Appends 2 lines
     public LoreBuilder setAttackSpeed(AttackSpeed attackSpeed) {
-        lore.add(0, attackSpeed.getFormattedName());
+        if(lore.size() != 0) {
+            lore.set(0, attackSpeed.getFormattedName());
+            lore.add(" ");
+        }
+        else
+            lore.add(attackSpeed.getFormattedName());
         return this;
     }
 
     public LoreBuilder addFirst(String s) {
         if(lore.contains("Attack Speed")) {
-            lore.add(1, s);
-            return this;
-        }
-        lore.add(0, s);
+            lore.add(2, s);
+        } else
+            lore.add(0, s);
         return this;
     }
 
     public LoreBuilder append(String s) {
         lore.add(s);
+        return this;
+    }
+
+
+    public LoreBuilder addAll(List<String> s) {
+        lore.addAll(s);
         return this;
     }
 
