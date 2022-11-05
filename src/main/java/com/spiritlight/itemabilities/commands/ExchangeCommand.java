@@ -2,7 +2,6 @@ package com.spiritlight.itemabilities.commands;
 
 import com.spiritlight.itemabilities.ItemAbilities;
 import com.spiritlight.itemabilities.utils.CommandBase;
-import com.spiritlight.itemabilities.utils.EnchantmentUtils;
 import com.spiritlight.itemabilities.utils.PluginWrapper;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -29,6 +28,7 @@ public class ExchangeCommand extends CommandBase {
         int amount;
         try {
             amount = Integer.parseInt(args[0]);
+            if(amount <= 0) throw new NumberFormatException("Number must be natural.");
         } catch (IndexOutOfBoundsException e) {
             amount = 1;
         } catch (NumberFormatException e) {

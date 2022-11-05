@@ -51,9 +51,8 @@ public class RemoveAbility extends CommandBase {
                 meta.setLore(lore);
                 ItemAbilities.logger.log(Level.INFO, "Lore removed!");
             }
+            meta.removeEnchant(ability);
             i.setItemMeta(meta);
-            ((Player) sender).getInventory().getItemInMainHand().setItemMeta(meta);
-            i.removeEnchantment(ability);
             sender.sendMessage("The ability has been removed from this item!");
             return true;
         } catch (Exception t) {

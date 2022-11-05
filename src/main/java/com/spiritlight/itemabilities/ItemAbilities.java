@@ -44,6 +44,12 @@ public class ItemAbilities extends JavaPlugin {
     public static NamespacedKey ATTRIBUTE_HEALTH;
     public static NamespacedKey ATTRIBUTE_ARMOR;
     public static NamespacedKey ATTRIBUTE_TOUGHNESS;
+    public static NamespacedKey ATTRIBUTE_ATTACK_SPEED;
+    public static NamespacedKey ATTRIBUTE_ATTACK_SPEED_RAW;
+
+    public static NamespacedKey CANNOT_REPAIR;
+    public static NamespacedKey UNBREAKABLE;
+    public static NamespacedKey CANNOT_MERGE;
 
     public static NamespacedKey CURRENCY;
 
@@ -96,6 +102,11 @@ public class ItemAbilities extends JavaPlugin {
         Enchantment.registerEnchantment(Attributes.HEALTH);
         Enchantment.registerEnchantment(Attributes.ARMOR);
         Enchantment.registerEnchantment(Attributes.TOUGHNESS);
+        Enchantment.registerEnchantment(Attributes.ATTACK_SPEED_PERCENT);
+        Enchantment.registerEnchantment(Attributes.ATTACK_SPEED_RAW);
+
+        Enchantment.registerEnchantment(Tags.IRREPAIRABLE);
+        Enchantment.registerEnchantment(Tags.UNBREAKABLE);
 
         Enchantment.registerEnchantment(EnchantmentUtils.CURRENCY);
         enchantLock(false);
@@ -118,6 +129,13 @@ public class ItemAbilities extends JavaPlugin {
         ATTRIBUTE_HEALTH = PluginWrapper.newNameSpacedKey("health");
         ATTRIBUTE_ARMOR = PluginWrapper.newNameSpacedKey("armor");
         ATTRIBUTE_TOUGHNESS = PluginWrapper.newNameSpacedKey("toughness");
+        ATTRIBUTE_ATTACK_SPEED = PluginWrapper.newNameSpacedKey("atkspdpct");
+        ATTRIBUTE_ATTACK_SPEED_RAW = PluginWrapper.newNameSpacedKey("atkspdraw");
+
+        /* Tags */
+        CANNOT_MERGE = PluginWrapper.newNameSpacedKey("nomerge");
+        CANNOT_REPAIR = PluginWrapper.newNameSpacedKey("norepair");
+        UNBREAKABLE = PluginWrapper.newNameSpacedKey("unbreakable");
 
         /* Currency */
         CURRENCY = PluginWrapper.newNameSpacedKey("currency");
@@ -147,6 +165,12 @@ public class ItemAbilities extends JavaPlugin {
         this.setExecutorAndTabComplete("removeattribute", new RemoveAttribute());
         this.setExecutorAndTabComplete("currency", new Currency());
         this.setExecutorAndTabComplete("exchange", new ExchangeCommand());
+        this.setExecutorAndTabComplete("metadump", new MetaDump());
+        this.setExecutorAndTabComplete("addtag", new AddTag());
+        this.setExecutorAndTabComplete("removetag", new RemoveTag());
+        this.setExecutorAndTabComplete("setattackspeed", new SetAttackSpeed());
+        // this.setExecutorAndTabComplete("condense", new CondenseCommand());
+        // this.setExecutorAndTabComplete("extract", new ExtractCommand());
     }
 
     // Register event listeners to make ability trigger

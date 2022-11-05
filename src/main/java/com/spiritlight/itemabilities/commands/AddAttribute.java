@@ -16,9 +16,9 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.logging.Level;
 
 public class AddAttribute extends CommandBase {
@@ -60,7 +60,7 @@ public class AddAttribute extends CommandBase {
         try {
             ItemStack i = ((Player) sender).getInventory().getItemInMainHand();
             ItemMeta meta = i.getItemMeta();
-            if (PluginWrapper.containsEnchantment(i, ability)) {
+            if (PluginWrapper.containsEnchantment(meta, ability)) {
                 sender.sendMessage("You cannot have duplicate attributes!");
                 return true;
             }
@@ -70,8 +70,9 @@ public class AddAttribute extends CommandBase {
             }
             // assert i.getItemMeta() != null
             if (meta.hasLore()) {
-                List<String> lore = Objects.requireNonNull(meta.getLore());
+                List<String> lore = new ArrayList<>();
                 lore.add(Attributes.getAttributeText(ability, modifier));
+                lore.addAll(meta.getLore());
                 meta.setLore(lore);
                 ItemAbilities.logger.log(Level.INFO, "Appended lore!");
             } else {
@@ -95,15 +96,16 @@ public class AddAttribute extends CommandBase {
                     return false;
                 }
             }
+            meta.addEnchant(ability, level, true);
             i.setItemMeta(meta);
-            ((Player) sender).getInventory().getItemInMainHand().setItemMeta(meta);
-            i.addEnchantment(ability, level);
+            // ((Player) sender).getInventory().getItemInMainHand().setItemMeta(meta);
             sender.sendMessage("The ability has been added to this item!");
             return true;
         } catch (IllegalArgumentException e) {
           sender.sendMessage("Invalid modifier! (Is it too high, or too low?)");
           return true;
         } catch (Exception t) {
+            sender.sendMessage("An error had occurred.");
             t.printStackTrace();
             return false;
         }

@@ -39,13 +39,13 @@ public class AddAbility extends CommandBase {
         try {
             ItemStack i = ((Player) sender).getInventory().getItemInMainHand();
             ItemMeta meta = i.getItemMeta();
-            if(PluginWrapper.containsEnchantment(i, ability)) {
-                sender.sendMessage("You cannot have duplicate abilities!");
-                return true;
-            }
             if(meta == null) {
                 ItemAbilities.logger.log(Level.INFO, "Item has no meta. Creating a new one.");
                 meta = new SpiritItemMeta(i.getItemMeta());
+            }
+            if(PluginWrapper.containsEnchantment(meta, ability)) {
+                sender.sendMessage("You cannot have duplicate abilities!");
+                return true;
             }
             // assert i.getItemMeta() != null
             if(ability.abilityVisible()) {
@@ -65,6 +65,7 @@ public class AddAbility extends CommandBase {
             sender.sendMessage("The ability has been added to this item!");
             return true;
         } catch (Exception t) {
+            sender.sendMessage("An internal error had occurred.");
             t.printStackTrace();
             return false;
         }

@@ -18,16 +18,14 @@ public class CAbilityGuardian implements Listener {
     public static final Ability ability = PluginWrapper.newAbility(
             ItemAbilities.ABILITY_GUARDIAN, "guardian", "Guardian",
             new String[]{"Reduces incoming damage by 25%", ChatColor.GRAY + "(Unstackable)"}, true,
-            1, EnchantmentTarget.BREAKABLE, false, null, null
+            1, EnchantmentTarget.BREAKABLE, false
     );
 
     @EventHandler
     public void onHurt(EntityDamageEvent event) {
-        if(!(event.getEntity() instanceof Player)) return;
-        if(((Player) event.getEntity()).getPlayer() == null) return;
-        Player player = ((Player) event.getEntity()).getPlayer();
-        if(player == null) return;
-        if(PluginWrapper.containsEnchantment(player.getInventory().getItemInMainHand(), ability)) {
+        if(!(event.getEntity() instanceof Player player)) return;
+        if(!player.getInventory().getItemInMainHand().hasItemMeta()) return;
+        if(PluginWrapper.containsEnchantment(player.getInventory().getItemInMainHand().getItemMeta(), ability)) {
             event.setDamage(event.getDamage() * 0.75);
         }
     }

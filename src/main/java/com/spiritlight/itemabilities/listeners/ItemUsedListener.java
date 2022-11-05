@@ -7,7 +7,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -28,7 +27,6 @@ public class ItemUsedListener implements Listener {
         if(EnchantmentUtils.hasEnchant(event.getItemInHand(), EnchantmentUtils.CURRENCY)) {
             event.setCancelled(true);
             event.getBlockPlaced().setType(Material.AIR);
-            event.getPlayer().getInventory().addItem(event.getItemInHand());
         }
     }
 
@@ -56,7 +54,8 @@ public class ItemUsedListener implements Listener {
         if(!EnchantmentUtils.hasEnchant(stx, EnchantmentUtils.CURRENCY)) return;
         if(!event.getPlayer().isSneaking()) return;
         PluginWrapper.Currency currency = PluginWrapper.Currency.fromName(stx.getItemMeta().getDisplayName());
-        if(currency == null) return;
+        if(currency == null) {
+        }
         /*
         PluginWrapper.Currency exchange;
 

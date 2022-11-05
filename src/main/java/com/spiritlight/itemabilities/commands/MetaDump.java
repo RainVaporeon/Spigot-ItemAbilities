@@ -1,7 +1,6 @@
 package com.spiritlight.itemabilities.commands;
 
 import com.spiritlight.itemabilities.utils.CommandBase;
-import com.spiritlight.itemabilities.utils.PluginWrapper;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -10,25 +9,19 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class Currency extends CommandBase {
+public class MetaDump extends CommandBase {
+
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if(!command.getName().equals("currency")) return false;
-        if(args.length != 1) return false;
-        if(!(sender instanceof Player)) {
-            sender.sendMessage("You must be a player to use this!");
+        if(!(sender instanceof Player player)) {
+            sender.sendMessage("You may only run this command as a player!");
             return true;
         }
-        final int amount;
         try {
-            amount = Integer.parseInt(args[0]);
-            if(amount <= 0) throw new NumberFormatException();
-        } catch (NumberFormatException e) {
-            sender.sendMessage("Invalid amount specified!");
-            return true;
+            player.sendMessage(player.getInventory().getItemInMainHand().getItemMeta().getAsString());
+        } catch (Exception e) {
+            player.sendMessage("null");
         }
-        PluginWrapper.getCurrency((Player) sender, amount);
-        sender.sendMessage("Successfully given " + amount + " currency!");
         return true;
     }
 

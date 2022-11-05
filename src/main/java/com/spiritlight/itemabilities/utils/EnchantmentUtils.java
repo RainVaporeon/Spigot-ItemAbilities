@@ -15,13 +15,11 @@ public class EnchantmentUtils {
     public static final Enchantment CURRENCY = PluginWrapper.newAbility(
             ItemAbilities.CURRENCY, "currency", "Currency",
             new String[0], false, 0, EnchantmentTarget.ALL,
-            false, null, null
+            false
     );
 
     public static int getEnchantmentLevel(ItemStack itemStack, Enchantment enchantment) {
-        if(itemStack == null || enchantment == null) return 0;
-        ItemStack i0 = itemStack.clone();
-        return i0.removeEnchantment(enchantment);
+        return itemStack.getItemMeta().getEnchantLevel(enchantment);
     }
 
     public static boolean entityHasEnchantment(LivingEntity entity, Enchantment enchantment) {
@@ -29,24 +27,25 @@ public class EnchantmentUtils {
     }
 
     public static boolean hasEnchant(ItemStack stack, Enchantment enchantment) {
-        if(stack == null || enchantment == null) return false;
-        return stack.clone().removeEnchantment(enchantment) != 0;
+        return PluginWrapper.containsEnchantment(stack.getItemMeta(), enchantment);
     }
 
     public static boolean entityHasEnchantment(LivingEntity entity, Enchantment enchantment, EnchantmentTarget target) {
-        if(entity == enchantment) return false; // null
-        boolean hasEquipments = entity.getEquipment() != null;
-        if(!hasEquipments) return false;
         final EntityEquipment equipment = entity.getEquipment();
+        if(equipment == null) return false;
         ItemStack[] armorContents = equipment.getArmorContents();
         ItemStack[] handItems = new ItemStack[] {equipment.getItemInMainHand(), equipment.getItemInOffHand()};
         for(ItemStack i : armorContents) {
+            if(i == null) continue;
             if(target != null && !target.includes(i)) continue;
-            if(PluginWrapper.containsEnchantment(i, enchantment)) return true;
+            if(!i.hasItemMeta()) continue;
+            if(PluginWrapper.containsEnchantment(i.getItemMeta(), enchantment)) return true;
         }
         for(ItemStack i : handItems) {
+            if(i == null) continue;
             if(target != null && !target.includes(i)) continue;
-            if(PluginWrapper.containsEnchantment(i, enchantment)) return true;
+            if(!i.hasItemMeta()) continue;
+            if(PluginWrapper.containsEnchantment(i.getItemMeta(), enchantment)) return true;
         }
         return false;
     }
@@ -64,12 +63,16 @@ public class EnchantmentUtils {
         ItemStack[] armorContents = equipment.getArmorContents();
         ItemStack[] handItems = new ItemStack[] {equipment.getItemInMainHand(), equipment.getItemInOffHand()};
         for(ItemStack i : armorContents) {
+            if(i == null) continue;
             if(!target.includes(i)) continue;
-            if(PluginWrapper.containsEnchantment(i, enchantment)) ret.add(i);
+            if(!i.hasItemMeta()) continue;
+            if(PluginWrapper.containsEnchantment(i.getItemMeta(), enchantment)) ret.add(i);
         }
         for(ItemStack i : handItems) {
+            if(i == null) continue;
             if(!target.includes(i)) continue;
-            if(PluginWrapper.containsEnchantment(i, enchantment)) ret.add(i);
+            if(!i.hasItemMeta()) continue;
+            if(PluginWrapper.containsEnchantment(i.getItemMeta(), enchantment)) ret.add(i);
         }
         return ret;
     }

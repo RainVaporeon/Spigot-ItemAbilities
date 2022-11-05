@@ -19,6 +19,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
+import java.util.logging.Level;
 
 /**
  * A complete class containing various static methods to help
@@ -29,10 +30,16 @@ public class PluginWrapper {
     private PluginWrapper() {}
 
     // Using this because apparently the implement will NOT work for weird reasons.
-    public static boolean containsEnchantment(ItemStack stack, Enchantment enchantment) {
-        if(stack == null || enchantment == null) return false;
-        ItemStack stx = stack.clone();
-        return stx.removeEnchantment(enchantment) != 0;
+    public static boolean containsEnchantment(ItemMeta meta, Enchantment enchantment) {
+        if(meta == null) {
+            ItemAbilities.logger.log(Level.WARNING, "null passed to containsEnchantment");
+            StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
+            for(StackTraceElement element : stackTraceElements) {
+                ItemAbilities.logger.log(Level.INFO, "\tat " + element.toString());
+            }
+            return false;
+        }
+         return meta.hasEnchant(enchantment);
     }
 
     public static long toTick(long time, TimeUnit unit) {
@@ -76,14 +83,11 @@ public class PluginWrapper {
      * @param maxLevel The maximum level
      * @param target Targets this ability can be applied to
      * @param cursed Whether this ability is cursed
-     * @param conflicts Conflicts enchantment, null to always return false
-     * @param canEnchant Can enchant on this itemstack, null to test with target.
      * @return Generated ability
      */
     public static Ability newAbility(NamespacedKey key, String name, String abilityName, String[] abilityDescription,
                                      boolean abilityVisible, int maxLevel,
-                                     EnchantmentTarget target, boolean cursed,
-                                     Predicate<Enchantment> conflicts, Predicate<ItemStack> canEnchant) {
+                                     EnchantmentTarget target, boolean cursed) {
         return new Ability(key, name) {
             @Override
             public String[] getAbilityDescription() {
@@ -124,12 +128,12 @@ public class PluginWrapper {
 
             @Override
             public boolean conflictsWith(@NotNull Enchantment other) {
-                return conflicts != null && conflicts.test(other);
+                return false;
             }
 
             @Override
             public boolean canEnchantItem(@NotNull ItemStack item) {
-                return canEnchant == null ? getItemTarget().includes(item) : canEnchant.test(item);
+                return true;
             }
         };
     }
@@ -182,8 +186,17 @@ public class PluginWrapper {
         };
     }
 
-    public static void getCurrency(Player sender, int amount) {
-        Map<Currency, Integer> map = getTypeAndQuantity(amount);
+    public static void getCurrency(Player player, int amount) {
+        getCurrency(player, amount, Currency.PLASMA, Currency.NORMAL);
+    }
+
+    public static void getCurrency(Player player, int amount, Currency maxType) {
+        getCurrency(player, amount, maxType, Currency.NORMAL);
+    }
+
+    public static void getCurrency(Player sender, int amount, Currency maxType, Currency minType) {
+        if(maxType.amount < minType.amount) throw new IllegalArgumentException("maxType cannot be smaller than minType!");
+        Map<Currency, Integer> map = getTypeAndQuantity(amount, maxType, minType);
         for(Currency currency : map.keySet()) {
             if(map.get(currency).equals(0)) continue;
             ItemStack stack = getCurrencyItem(currency);
@@ -208,9 +221,11 @@ public class PluginWrapper {
         return stack;
     }
 
-    private static Map<Currency, Integer> getTypeAndQuantity(int parse) {
+    private static Map<Currency, Integer> getTypeAndQuantity(int parse, Currency maxType, Currency minType) {
         Map<Currency, Integer> ret = new HashMap<>();
-        for(Currency currency : Arrays.stream(Currency.values()).sorted(
+        List<Currency> currencyList = new ArrayList<>(Arrays.stream(Currency.values()).toList());
+        currencyList.removeIf(currency -> currency.amount > maxType.amount || currency.amount < minType.amount);
+        for(Currency currency : currencyList.stream().sorted(
                 (a, b) -> b.amount - a.amount
         ).toList()) {
             ret.put(currency, parse / currency.amount);
@@ -239,12 +254,31 @@ public class PluginWrapper {
 
         @Nullable(/* if string is not created via Currency.toString() or contain the corresponding name */)
         public static Currency fromName(String string) {
-            if(string == null || string.isEmpty()) return null;
+            if(string == null) return null;
             for(Currency c : values()) {
                 if(string.contains(c.toString()))
                     return c;
             }
             return null;
+        }
+
+        @Nullable(/* if ItemStack have no ItemMeta or fromName() returns false */)
+        public static Currency fromItemStack(ItemStack itemStack) {
+            if(itemStack == null || itemStack.getItemMeta() == null) return null;
+            return fromName(itemStack.getItemMeta().getDisplayName());
+        }
+
+        /**
+         * If this method returns true, fromName() will return a non-null value.
+         * @param itemStack ItemStack to test
+         * @return true if it is a valid currency.
+         */
+        public static boolean isCurrency(ItemStack itemStack) {
+            if(itemStack == null) return false;
+            if(!itemStack.hasItemMeta()) return false;
+            if(!PluginWrapper.containsEnchantment(itemStack.getItemMeta(), EnchantmentUtils.CURRENCY)) return false;
+            PluginWrapper.Currency currency = PluginWrapper.Currency.fromName(itemStack.getItemMeta().getDisplayName());
+            return currency != null;
         }
 
         public int getAmount() {

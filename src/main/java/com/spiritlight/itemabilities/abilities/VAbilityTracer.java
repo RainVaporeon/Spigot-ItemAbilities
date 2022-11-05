@@ -15,7 +15,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
 
 /**
  * Combat ability: Tracer<br>
@@ -26,14 +25,14 @@ public class VAbilityTracer implements Listener {
     public static final Ability ability = PluginWrapper.newAbility(
             ItemAbilities.ABILITY_TRACER, "tracer", "Tracer",
             new String[]{"Arrows shot has tracking ability."},
-            true, 1, EnchantmentTarget.BOW, false,
-            null, null
+            true, 1, EnchantmentTarget.BOW, false
     );
 
     @EventHandler
     public void onBowShot(@NotNull EntityShootBowEvent event) {
         if (event.getBow() == null) return;
-        if (!PluginWrapper.containsEnchantment(event.getBow(), ability))
+        if(!event.getBow().hasItemMeta()) return;
+        if (!PluginWrapper.containsEnchantment(event.getBow().getItemMeta(), ability))
             return;
         final Entity projectile = event.getProjectile();
         final int task = PluginWrapper.scheduleRepeatTask(() -> {

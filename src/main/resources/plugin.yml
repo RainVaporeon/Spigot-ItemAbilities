@@ -34,8 +34,36 @@ commands:
     description: Exchanges your potatoes for the currency.
     usage: /exchange [amount]
     permission: itemabilities.exchange
-    default: true
+  metadump:
+    description: Shows ItemMeta.
+    usage: /metadump
+    permission: itemabilities.metadump
+  addtag:
+    description: Adds tagging to an item
+    usage: /addtag <tag>
+    permission: itemabilities.addtag
+  removetag:
+    description: Removes a tag from an item
+    usage: /removetag <tag>
+    permission: itemabilities.removetag
+  setattackspeed:
+    description: Sets item attack speed
+    usage: /setattackspeed <speed>
+    permission: itemabilities.setattackspeed
+  #condense:
+  #  description: Condenses your currency in hand, or /condense all to condense all the currency into the highest tiered one.
+  #  usage: /condense [amount|all]
+  #  permission: itemabilities.condense
+  #extract:
+  #  description: Extracts your currency in hand.
+  #  usage: /extract [amount]
+  #  permission: itemabilities.extract
+
 
 permissions:
   itemabilities.exchange:
+    default: true
+  itemabilities.condense:
+    default: true
+  itemabilities.extract:
     default: true

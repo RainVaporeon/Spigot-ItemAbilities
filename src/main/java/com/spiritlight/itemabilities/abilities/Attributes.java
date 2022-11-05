@@ -21,46 +21,56 @@ public class Attributes {
     public static final Ability SPEED = PluginWrapper.newAbility(
             ItemAbilities.ATTRIBUTE_SPEED, "speed", "% Movement Speed",
             new String[0], true, 1, EnchantmentTarget.BREAKABLE,
-            false, null, null
+            false
     );
 
     // Level 1 due to attributes not depending on enchantment
     public static final Ability ATTACK_DAMAGE_PCT = PluginWrapper.newAbility(
             ItemAbilities.ATTRIBUTE_ATTACK_DAMAGE_PCT, "atkdmgpct", "% Attack Damage",
             new String[0], true, 1, EnchantmentTarget.BREAKABLE,
-            false, null, null
+            false
     );
 
     // Level 1 due to attributes not depending on enchantment
     public static final Ability ATTACK_DAMAGE_RAW = PluginWrapper.newAbility(
             ItemAbilities.ATTRIBUTE_ATTACK_DAMAGE_RAW, "atkdmgraw", " Raw Attack Damage",
             new String[0], true, 1, EnchantmentTarget.BREAKABLE,
-            false, null, null
+            false
     );
 
     public static final Ability LIGHTWEIGHT = PluginWrapper.newAbility(
             ItemAbilities.ATTRIBUTE_LIGHTWEIGHT, "lightweight", "% Reduced Fall Damage",
             new String[0], true, 32767, EnchantmentTarget.BREAKABLE,
-            false, null, null
+            false
     );
 
     // You know the drill
     public static final Ability HEALTH = PluginWrapper.newAbility(
             ItemAbilities.ATTRIBUTE_HEALTH, "health", " Health",
             new String[0], true, 1, EnchantmentTarget.BREAKABLE,
-            false, null, null
+            false
     );
 
     public static final Ability ARMOR = PluginWrapper.newAbility(
             ItemAbilities.ATTRIBUTE_ARMOR, "armor", " Armor",
             new String[0], true, 1, EnchantmentTarget.BREAKABLE,
-            false, null, null
+            false
     );
 
     public static final Ability TOUGHNESS = PluginWrapper.newAbility(
             ItemAbilities.ATTRIBUTE_TOUGHNESS, "toughness", " Toughness",
             new String[0], true, 1, EnchantmentTarget.BREAKABLE,
-            false, null, null
+            false
+    );
+
+    public static final Ability ATTACK_SPEED_PERCENT = PluginWrapper.newAbility(
+            ItemAbilities.ATTRIBUTE_ATTACK_SPEED, "attack_speed_pct", "% Attack Speed",
+            new String[0], true, 1, EnchantmentTarget.BREAKABLE, false
+    );
+
+    public static final Ability ATTACK_SPEED_RAW = PluginWrapper.newAbility(
+            ItemAbilities.ATTRIBUTE_ATTACK_SPEED_RAW, "attack_speed_raw", " Attack Speed",
+            new String[0], false, 1, EnchantmentTarget.BREAKABLE, false
     );
 
     private static final Map<String, Ability> attributeMap = new HashMap<>() {{
@@ -71,6 +81,7 @@ public class Attributes {
         put("health", HEALTH);
         put("armor", ARMOR);
         put("toughness", TOUGHNESS);
+        put("attackspdpct", ATTACK_SPEED_PERCENT);
     }};
 
     private static final Map<Ability, Modifier> modifierMap = new HashMap<>() {{
@@ -92,6 +103,12 @@ public class Attributes {
                 AttributeModifier.Operation.ADD_NUMBER));
         put(TOUGHNESS, new Modifier("itemabilities.toughness",
                 Attribute.GENERIC_ARMOR_TOUGHNESS,
+                AttributeModifier.Operation.ADD_NUMBER));
+        put(ATTACK_SPEED_PERCENT, new Modifier("itemabilities.attack_speed_percent",
+                Attribute.GENERIC_ATTACK_SPEED,
+                AttributeModifier.Operation.ADD_SCALAR));
+        put(ATTACK_SPEED_RAW, new Modifier("itemabilities.attack_speed_raw",
+                Attribute.GENERIC_ATTACK_SPEED,
                 AttributeModifier.Operation.ADD_NUMBER));
     }};
 

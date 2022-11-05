@@ -16,7 +16,7 @@ public class CAbilityDoubleStrike implements Listener {
     public static final Ability ability = PluginWrapper.newAbility(
             ItemAbilities.ABILITY_DOUBLESTRIKE, "double_strike", "DoubleStrike",
             new String[] {"20% chance to attack again", ChatColor.GRAY + "(Unstackable)"},
-            true, 1, EnchantmentTarget.WEAPON, false, null, null
+            true, 1, EnchantmentTarget.WEAPON, false
     );
 
     private static final Random RANDOM = new Random();

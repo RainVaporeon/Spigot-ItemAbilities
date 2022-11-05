@@ -47,7 +47,7 @@ public class RemoveAttribute extends CommandBase {
         try {
             ItemStack i = ((Player) sender).getInventory().getItemInMainHand();
             ItemMeta meta = i.getItemMeta();
-            if (!PluginWrapper.containsEnchantment(i, ability)) {
+            if (!PluginWrapper.containsEnchantment(meta, ability)) {
                 sender.sendMessage("This attribute does not exist!");
                 return true;
             }
@@ -73,9 +73,10 @@ public class RemoveAttribute extends CommandBase {
                                 .toList().get(0).getAmount(),
                         attribute.getOperation()));
             }
+            meta.removeEnchant(ability);
             i.setItemMeta(meta);
-            ((Player) sender).getInventory().getItemInMainHand().setItemMeta(meta);
-            i.removeEnchantment(ability); // Lightweight also gets removed by this operation
+            // ((Player) sender).getInventory().getItemInMainHand().setItemMeta(meta);
+            // ((Player) sender).getInventory().getItemInMainHand().removeEnchantment(ability); // Lightweight also gets removed by this operation
             sender.sendMessage("The ability has been removed from this item!");
             return true;
         } catch (Exception t) {

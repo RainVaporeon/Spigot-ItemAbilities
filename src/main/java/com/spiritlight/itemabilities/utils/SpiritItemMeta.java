@@ -142,8 +142,7 @@ public class SpiritItemMeta implements ItemMeta {
 
     @Override
     public boolean removeEnchant(@NotNull Enchantment ench) {
-        enchantments.remove(ench);
-        return false;
+        return enchantments.remove(ench) != null;
     }
 
     @Override
@@ -260,7 +259,6 @@ public class SpiritItemMeta implements ItemMeta {
 
     @Override
     public void setVersion(int version) {
-
     }
 
     @NotNull
