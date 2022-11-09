@@ -7,7 +7,7 @@ authors: [ OriTheSpirit ]
 commands:
   addability:
     description: Adds an ability to your item.
-    usage: /addability <ability>
+    usage: /addability <ability> [forced]
     permission: itemabilities.addability
     permission-message: You are not allowed to use this command!
   removeability:
@@ -17,7 +17,7 @@ commands:
     permission-message: You are not allowed to use this command!
   addattribute:
     description: Adds an attribute to your item.
-    usage: /addattribute <attribute> <modifier>
+    usage: /addattribute <attribute> <slot> <modifier> [forced]
     permission: itemabilities.addattribute
     permission-message: You are not allowed to use this command!
   removeattribute:

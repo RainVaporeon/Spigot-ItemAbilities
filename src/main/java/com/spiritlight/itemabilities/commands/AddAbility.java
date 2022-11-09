@@ -31,6 +31,7 @@ public class AddAbility extends CommandBase {
             sender.sendMessage("You need to input an ability name:");
             return false;
         }
+        boolean forced = false;
         Ability ability = ItemAbilities.abilityMap.get(args[0]);
         if(ability == null) {
             sender.sendMessage("You need to specify a correct ability name!");
@@ -38,7 +39,15 @@ public class AddAbility extends CommandBase {
             return true;
         }
         try {
+            forced = Boolean.parseBoolean(args[1]);
+        } catch (IndexOutOfBoundsException ignored) {}
+        try {
             ItemStack i = ((Player) sender).getInventory().getItemInMainHand();
+            if(!ability.getItemTarget().includes(i) && !forced) {
+                sender.sendMessage("It doesn't seem like you can apply the attribute to this item type.");
+                return true;
+            }
+            
             ItemMeta meta = i.getItemMeta();
             if(meta == null) {
                 ItemAbilities.logger.log(Level.INFO, "Item has no meta. Creating a new one.");

@@ -15,7 +15,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
@@ -39,18 +38,26 @@ public class AddAttribute extends CommandBase {
 
         /* Initializing variables, determine the attribute and modifiers. */
         Ability ability = Attributes.fromString(args[0]);
-        EquipmentSlot slot = null;
+        EquipmentSlot slot;
         int modifier;
         int level = 1;
+        boolean forced = false;
         try {
-            modifier = Integer.parseInt(args[1]);
-        } catch (NumberFormatException ex) {
+            modifier = Integer.parseInt(args[2]);
+        } catch (NumberFormatException|IndexOutOfBoundsException ex) {
             sender.sendMessage("Cannot parse the given modifier!");
             return true;
         }
         try {
-            slot = StringUtils.getSlotByString(args[2]);
+            slot = StringUtils.getSlotByString(args[1]);
+        } catch (IndexOutOfBoundsException ex) {
+            sender.sendMessage("You must specify a slot!");
+            return true;
+        }
+        try {
+            forced = Boolean.parseBoolean(args[3]);
         } catch (IndexOutOfBoundsException ignored) {
+
         }
         /* Checks whether the modifier is valid, we already are using a different ability map here! */
         if (ability == null) {
@@ -62,6 +69,10 @@ public class AddAttribute extends CommandBase {
         /* Starts adding attributes etc */
         try {
             ItemStack i = ((Player) sender).getInventory().getItemInMainHand();
+            if(!ability.getItemTarget().includes(i) && !forced) {
+                sender.sendMessage("It doesn't seem like you can apply the attribute to this item type.");
+                return true;
+            }
             ItemMeta meta = i.getItemMeta();
             if (PluginWrapper.containsEnchantment(meta, ability)) {
                 sender.sendMessage("You cannot have duplicate attributes!");
@@ -83,9 +94,7 @@ public class AddAttribute extends CommandBase {
             }
             Attributes.Modifier attribute = Attributes.getAttribute(ability);
             if (attribute == null) {
-                if(ability == Attributes.LIGHTWEIGHT) {
-                    level = modifier; // Lightweight uses reduction based on level, 1% per level.
-                }
+                level = modifier; // Percentage-based attribute such as critical and lightweight.
             } else {
                 try {
                     meta.addAttributeModifier(attribute.getType(), new AttributeModifier(
@@ -121,6 +130,9 @@ public class AddAttribute extends CommandBase {
             return StringUtils.filterByRelevance(Attributes.getAvailableAttributeNames().stream().toList(), args[0]);
         if(args.length == 3) {
             return StringUtils.equipmentMap.keySet().stream().toList();
+        }
+        if(args.length == 4) {
+            return List.of("true", "false");
         }
         return Collections.emptyList();
     }

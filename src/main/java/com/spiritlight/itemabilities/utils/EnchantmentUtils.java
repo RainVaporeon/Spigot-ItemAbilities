@@ -14,7 +14,7 @@ import java.util.List;
 public class EnchantmentUtils {
     public static final Enchantment CURRENCY = PluginWrapper.newAbility(
             ItemAbilities.CURRENCY, "currency", "Currency",
-            new String[0], false, 0, EnchantmentTarget.ALL,
+            new String[0], false, 1, EnchantmentTarget.ALL,
             false
     );
 
@@ -55,7 +55,7 @@ public class EnchantmentUtils {
     }
 
     public static List<ItemStack> getEnchantedItems(LivingEntity entity, Enchantment enchantment, EnchantmentTarget target) {
-        if(entity == null || enchantment == null || target == null) return Collections.emptyList();
+        if(entity == null || enchantment == null) return Collections.emptyList();
         final List<ItemStack> ret = new ArrayList<>();
         boolean hasEquipments = entity.getEquipment() != null;
         if(!hasEquipments) return Collections.emptyList();
@@ -64,13 +64,13 @@ public class EnchantmentUtils {
         ItemStack[] handItems = new ItemStack[] {equipment.getItemInMainHand(), equipment.getItemInOffHand()};
         for(ItemStack i : armorContents) {
             if(i == null) continue;
-            if(!target.includes(i)) continue;
+            if(target != null && !target.includes(i)) continue;
             if(!i.hasItemMeta()) continue;
             if(PluginWrapper.containsEnchantment(i.getItemMeta(), enchantment)) ret.add(i);
         }
         for(ItemStack i : handItems) {
             if(i == null) continue;
-            if(!target.includes(i)) continue;
+            if(target != null && !target.includes(i)) continue;
             if(!i.hasItemMeta()) continue;
             if(PluginWrapper.containsEnchantment(i.getItemMeta(), enchantment)) ret.add(i);
         }

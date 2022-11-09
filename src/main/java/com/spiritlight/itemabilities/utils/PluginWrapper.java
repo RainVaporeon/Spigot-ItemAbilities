@@ -208,10 +208,6 @@ public class PluginWrapper {
     public static ItemStack getCurrencyItem(Currency currency) {
         ItemStack stack = new ItemStack(currency.material);
         ItemMeta meta = stack.getItemMeta();
-        meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        // v1: Fix exchange duplication
-        // v2: Patch exchange duplication (again)
-        meta.addEnchant(EnchantmentUtils.CURRENCY, 2, true);
         meta.setDisplayName(ChatColor.GOLD + currency.toString());
         meta.setLore(List.of("",
                 ChatColor.YELLOW + "Potato Economy",

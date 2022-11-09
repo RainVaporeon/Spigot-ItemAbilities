@@ -35,5 +35,7 @@ public class StringUtils {
        put("CHEST", EquipmentSlot.CHEST);
        put("LEGS", EquipmentSlot.LEGS);
        put("FEET", EquipmentSlot.FEET);
+       put("ALL", null);
+
     }};
 }

@@ -3,6 +3,7 @@ package com.spiritlight.itemabilities.abilities;
 import com.spiritlight.itemabilities.ItemAbilities;
 import com.spiritlight.itemabilities.utils.EnchantmentUtils;
 import com.spiritlight.itemabilities.utils.PluginWrapper;
+import com.spiritlight.itemabilities.utils.Probabilities;
 import org.bukkit.*;
 import org.bukkit.enchantments.EnchantmentTarget;
 import org.bukkit.entity.LivingEntity;
@@ -19,15 +20,12 @@ public class CAbilityDoubleStrike implements Listener {
             true, 1, EnchantmentTarget.WEAPON, false
     );
 
-    private static final Random RANDOM = new Random();
-
     @EventHandler
     public void onAttack(EntityDamageByEntityEvent event) {
         if(!(event.getDamager() instanceof LivingEntity attacker)) return;
         if(!(event.getEntity() instanceof LivingEntity receiver)) return;
         if(EnchantmentUtils.entityHasEnchantment(attacker, ability)) {
-            boolean b = RANDOM.nextInt(100) > 79; // 1 ~ 100
-            if(!b) return;
+            if(!Probabilities.passPredicate(80)) return;
             World world = attacker.getWorld();
             PluginWrapper.scheduleTask(() -> {
                 try {

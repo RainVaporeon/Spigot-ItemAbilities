@@ -38,12 +38,6 @@ public class Attributes {
             false
     );
 
-    public static final Ability LIGHTWEIGHT = PluginWrapper.newAbility(
-            ItemAbilities.ATTRIBUTE_LIGHTWEIGHT, "lightweight", "% Reduced Fall Damage",
-            new String[0], true, 32767, EnchantmentTarget.BREAKABLE,
-            false
-    );
-
     // You know the drill
     public static final Ability HEALTH = PluginWrapper.newAbility(
             ItemAbilities.ATTRIBUTE_HEALTH, "health", " Health",
@@ -73,6 +67,26 @@ public class Attributes {
             new String[0], false, 1, EnchantmentTarget.BREAKABLE, false
     );
 
+    /* Special Attributes */
+
+    public static final Ability LIGHTWEIGHT = PluginWrapper.newAbility(
+            ItemAbilities.ATTRIBUTE_LIGHTWEIGHT, "lightweight", "% Reduced Fall Damage",
+            new String[0], true, 32767, EnchantmentTarget.BREAKABLE,
+            false
+    );
+
+    public static final Ability CRITICAL_CHANCE = PluginWrapper.newAbility(
+            ItemAbilities.ATTRIBUTE_LIGHTWEIGHT, "crit", "% Critical Chance",
+            new String[0], true, 32767, EnchantmentTarget.BREAKABLE,
+            false
+    );
+
+    public static final Ability JUMP_BOOST = PluginWrapper.newAbility(
+            ItemAbilities.ATTRIBUTE_JUMP_HEIGHT, "jump", " Jump Height",
+            new String[0], true, 32767, EnchantmentTarget.BREAKABLE,
+            false
+    );
+
     private static final Map<String, Ability> attributeMap = new HashMap<>() {{
         put("speed", SPEED);
         put("atkdmgpct", ATTACK_DAMAGE_PCT);
@@ -82,6 +96,8 @@ public class Attributes {
         put("armor", ARMOR);
         put("toughness", TOUGHNESS);
         put("attackspdpct", ATTACK_SPEED_PERCENT);
+        put("critical", CRITICAL_CHANCE);
+        put("jump", JUMP_BOOST);
     }};
 
     private static final Map<Ability, Modifier> modifierMap = new HashMap<>() {{
@@ -95,6 +111,8 @@ public class Attributes {
                 Attribute.GENERIC_ATTACK_DAMAGE,
                 AttributeModifier.Operation.ADD_NUMBER));
         put(LIGHTWEIGHT, null);
+        put(CRITICAL_CHANCE, null);
+        put(JUMP_BOOST, null);
         put(HEALTH, new Modifier("itemabilities.health",
                 Attribute.GENERIC_MAX_HEALTH,
                 AttributeModifier.Operation.ADD_NUMBER));

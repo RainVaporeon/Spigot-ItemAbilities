@@ -23,12 +23,17 @@ public class LoreBuilder {
 
     // Appends 2 lines
     public LoreBuilder setAttackSpeed(AttackSpeed attackSpeed) {
-        if(lore.size() != 0) {
+        if(lore.size() == 0) {
+            lore.add("");
             lore.set(0, attackSpeed.getFormattedName());
             lore.add(" ");
         }
-        else
-            lore.add(attackSpeed.getFormattedName());
+        else if (lore.get(0).contains("Attack Speed"))
+            lore.set(0, attackSpeed.getFormattedName());
+        else {
+            lore.add(0, "");
+            lore.add(0, attackSpeed.getFormattedName());
+        }
         return this;
     }
 

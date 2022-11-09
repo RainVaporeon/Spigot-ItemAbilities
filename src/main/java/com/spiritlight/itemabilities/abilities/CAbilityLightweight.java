@@ -12,11 +12,11 @@ public class CAbilityLightweight implements Listener {
 
     @EventHandler
     public void onFallDamage(EntityDamageEvent event) {
-        if(!(event.getEntity() instanceof LivingEntity)) return;
+        if(!(event.getEntity() instanceof LivingEntity entity)) return;
         if(event.getCause() != EntityDamageEvent.DamageCause.FALL) return;
-        if(EnchantmentUtils.entityHasEnchantment((LivingEntity) event.getEntity(), ability)) {
+        if(EnchantmentUtils.entityHasEnchantment(entity, ability)) {
             double modifier = 1.0D;
-            for(ItemStack i : EnchantmentUtils.getEnchantedItems((LivingEntity) event.getEntity(), ability)) {
+            for(ItemStack i : EnchantmentUtils.getEnchantedItems(entity, ability)) {
                 float mod = 1 - (EnchantmentUtils.getEnchantmentLevel(i, ability) / 100.0F);
                 modifier *= mod;
             }

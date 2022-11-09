@@ -3,6 +3,7 @@ package com.spiritlight.itemabilities.abilities;
 import com.spiritlight.itemabilities.ItemAbilities;
 import com.spiritlight.itemabilities.utils.EnchantmentUtils;
 import com.spiritlight.itemabilities.utils.PluginWrapper;
+import com.spiritlight.itemabilities.utils.Probabilities;
 import org.bukkit.ChatColor;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
@@ -29,8 +30,7 @@ public class CAbilityStrikeBack implements Listener {
         if(!(event.getDamager() instanceof LivingEntity attacker)) return;
         if(!(event.getEntity() instanceof LivingEntity receiver)) return;
         if(EnchantmentUtils.entityHasEnchantment(receiver, ability)) {
-            boolean b = RANDOM.nextInt(100) > 64; // 1 ~ 100
-            if(!b) return;
+            if(!Probabilities.passPredicate(65)) return;
             World world = attacker.getWorld();
             PluginWrapper.scheduleTask(() -> {
                 if(receiver.isDead()) return;
