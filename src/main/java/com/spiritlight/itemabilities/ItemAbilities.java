@@ -7,12 +7,11 @@ import com.spiritlight.itemabilities.utils.CommandBase;
 import com.spiritlight.itemabilities.utils.EffectHook;
 import com.spiritlight.itemabilities.utils.EnchantmentUtils;
 import com.spiritlight.itemabilities.utils.PluginWrapper;
+import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.enchantments.EnchantmentTarget;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
-import sun.misc.Unsafe;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
@@ -66,15 +65,12 @@ public class ItemAbilities extends JavaPlugin {
 
     private static boolean initFinish = false;
 
-    private static ScheduledFuture<?> effectHookFuture = null;
+    private static int taskID = -1;
 
     @Override
     public void onEnable() {
         INSTANCE = this;
         logger = this.getLogger();
-        effectHookFuture = Executors.newSingleThreadScheduledExecutor()
-                .scheduleAtFixedRate(EffectHook::run,
-                        0, 3, TimeUnit.SECONDS);
         if(!initFinish) {
             try {
                 init();
@@ -86,12 +82,13 @@ public class ItemAbilities extends JavaPlugin {
             }
             initFinish = true;
         }
+        taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new EffectHook(), 0, 60);
     }
 
     @Override
     public void onDisable() {
-        if(effectHookFuture != null)
-            effectHookFuture.cancel(true);
+        if(taskID != -1)
+            Bukkit.getScheduler().cancelTask(taskID);
     }
 
     // registers enchantments etc

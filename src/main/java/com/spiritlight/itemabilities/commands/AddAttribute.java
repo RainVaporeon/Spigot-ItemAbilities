@@ -110,6 +110,9 @@ public class AddAttribute extends CommandBase {
             }
             meta.addEnchant(ability, level, true);
             i.setItemMeta(meta);
+            try {
+                i.addEnchantment(ability, level);
+            } catch (IllegalArgumentException ignored) {}
             // ((Player) sender).getInventory().getItemInMainHand().setItemMeta(meta);
             sender.sendMessage("The ability has been added to this item!");
             return true;
@@ -128,7 +131,7 @@ public class AddAttribute extends CommandBase {
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if(args.length == 1)
             return StringUtils.filterByRelevance(Attributes.getAvailableAttributeNames().stream().toList(), args[0]);
-        if(args.length == 3) {
+        if(args.length == 2) {
             return StringUtils.equipmentMap.keySet().stream().toList();
         }
         if(args.length == 4) {

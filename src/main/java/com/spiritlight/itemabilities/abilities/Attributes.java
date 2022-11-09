@@ -20,51 +20,51 @@ public class Attributes {
     // Level 1 due to attributes not depending on enchantment
     public static final Ability SPEED = PluginWrapper.newAbility(
             ItemAbilities.ATTRIBUTE_SPEED, "speed", "% Movement Speed",
-            new String[0], true, 1, EnchantmentTarget.BREAKABLE,
+            new String[0], true, 32767, EnchantmentTarget.BREAKABLE,
             false
     );
 
     // Level 1 due to attributes not depending on enchantment
     public static final Ability ATTACK_DAMAGE_PCT = PluginWrapper.newAbility(
             ItemAbilities.ATTRIBUTE_ATTACK_DAMAGE_PCT, "atkdmgpct", "% Attack Damage",
-            new String[0], true, 1, EnchantmentTarget.BREAKABLE,
+            new String[0], true, 32767, EnchantmentTarget.BREAKABLE,
             false
     );
 
     // Level 1 due to attributes not depending on enchantment
     public static final Ability ATTACK_DAMAGE_RAW = PluginWrapper.newAbility(
             ItemAbilities.ATTRIBUTE_ATTACK_DAMAGE_RAW, "atkdmgraw", " Raw Attack Damage",
-            new String[0], true, 1, EnchantmentTarget.BREAKABLE,
+            new String[0], true, 32767, EnchantmentTarget.BREAKABLE,
             false
     );
 
     // You know the drill
     public static final Ability HEALTH = PluginWrapper.newAbility(
             ItemAbilities.ATTRIBUTE_HEALTH, "health", " Health",
-            new String[0], true, 1, EnchantmentTarget.BREAKABLE,
+            new String[0], true, 32767, EnchantmentTarget.BREAKABLE,
             false
     );
 
     public static final Ability ARMOR = PluginWrapper.newAbility(
             ItemAbilities.ATTRIBUTE_ARMOR, "armor", " Armor",
-            new String[0], true, 1, EnchantmentTarget.BREAKABLE,
+            new String[0], true, 32767, EnchantmentTarget.BREAKABLE,
             false
     );
 
     public static final Ability TOUGHNESS = PluginWrapper.newAbility(
             ItemAbilities.ATTRIBUTE_TOUGHNESS, "toughness", " Toughness",
-            new String[0], true, 1, EnchantmentTarget.BREAKABLE,
+            new String[0], true, 32767, EnchantmentTarget.BREAKABLE,
             false
     );
 
     public static final Ability ATTACK_SPEED_PERCENT = PluginWrapper.newAbility(
             ItemAbilities.ATTRIBUTE_ATTACK_SPEED, "attack_speed_pct", "% Attack Speed",
-            new String[0], true, 1, EnchantmentTarget.BREAKABLE, false
+            new String[0], true, 32767, EnchantmentTarget.BREAKABLE, false
     );
 
     public static final Ability ATTACK_SPEED_RAW = PluginWrapper.newAbility(
             ItemAbilities.ATTRIBUTE_ATTACK_SPEED_RAW, "attack_speed_raw", " Attack Speed",
-            new String[0], false, 1, EnchantmentTarget.BREAKABLE, false
+            new String[0], false, 32767, EnchantmentTarget.BREAKABLE, false
     );
 
     /* Special Attributes */
@@ -76,7 +76,7 @@ public class Attributes {
     );
 
     public static final Ability CRITICAL_CHANCE = PluginWrapper.newAbility(
-            ItemAbilities.ATTRIBUTE_LIGHTWEIGHT, "crit", "% Critical Chance",
+            ItemAbilities.ATTRIBUTE_CRITICAL_CHANCE, "crit", "% Critical Chance",
             new String[0], true, 32767, EnchantmentTarget.BREAKABLE,
             false
     );
